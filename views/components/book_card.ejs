@@ -10,7 +10,8 @@
 </style>
 <div class="book-focus">
   <div class="cover-focus">
-    <img id = "cover" 
+    <img
+      id="cover"
       src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-L.jpg"
     />
   </div>
@@ -26,9 +27,9 @@
   <div class="price-focus">
     <p><strong>R<%= book.price %></strong></p>
     <% if (locals.user) { %>
-      <a href="/add_cart?book_id=<%= book.id %>" class="button">Add to Cart</a>
+    <a href="/add_cart?book_id=<%= book.id %>" class="button">Add to Cart</a>
     <% } else { %>
-      <a href="/login" class="button">Add to Cart</a>
+    <a href="/login" class="button">Add to Cart</a>
     <% } %>
   </div>
 </div>
