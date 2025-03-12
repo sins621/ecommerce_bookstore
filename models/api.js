@@ -1,27 +1,27 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default class API {
-  constructor(app, db) {
+  constructor(app) {
     this.app = app;
-    this.db = db;
-    this.setupEndpoints();
   }
 
-  async setupEndpoints() {
-    this.updateRoleRoute();
-    this.deleteUserRoute();
-    this.geminiPromptRoute();
-  }
-
-  async updateRoleRoute() {
-    this.app.post("/update_role", async (req, res) => {
-      this.db.updateRole(req.body.role, req.body.email);
+  async addBookRoute(fetchBooks) {
+    this.app.post("/add_book", async (req, res) => {
+      if (!req.body) return res.send("Server Error").status(500);
+      const BOOKS = fetchBooks(req.body.author, req.body.title);
+      return res.render("add_book.ejs", { books: BOOKS, categories: CATEGORIES });
     });
   }
 
-  async deleteUserRoute() {
+  async updateRoleRoute(updateRole) {
+    this.app.post("/update_role", async (req, res) => {
+      updateRole(req.body.role, req.body.email);
+    });
+  }
+
+  async deleteUserRoute(deleteUser) {
     this.app.delete("/delete_user", async (req, res) => {
-      await this.db.deleteUser(req.body.email);
+      deleteUser(req.body.email);
     });
   }
 

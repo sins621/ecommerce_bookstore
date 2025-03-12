@@ -9,6 +9,8 @@ import session from "express-session";
 import DatabaseHandler from "./models/databasehandler.js";
 import Mailer from "./models/mailer.js";
 import API from "./models/api.js";
+import Views from "./models/views.js";
+import MyInterface from "./models/interface.js";
 
 // TODO: Error Handling
 // TODO: Continue Migration of db Functions to db Class.
@@ -61,20 +63,17 @@ const CATEGORIES = [
 const SALT_ROUNDS = 10;
 
 const mailer = new Mailer(process.env.MAIL_USER, process.env.MAIL_PASS);
-const api = new API(app, databaseHandler);
-
-// Home
-app.get("/", async (req, res) => {
-  var books = await databaseHandler.fetchAllBooks();
-
-  if (books.length === 0) return res.send("Error Retrieving Books").status(500);
-
-  return res.render("index.ejs", {
-    categories: CATEGORIES,
-    books: books,
-    user: req.user,
-  });
+const api = new API(app);
+const views = new Views(app);
+const myInterface = new MyInterface({
+  app: app,
+  databaseHandler: databaseHandler,
+  views: views,
+  mailer: mailer,
+  api: api,
 });
+
+myInterface.home(CATEGORIES);
 
 app.get("/filter", async (req, res) => {
   var books = databaseHandler.fetchAllBooks({ category: req.query.category });
@@ -94,22 +93,6 @@ app.get("/add_book", async (req, res) => {
   if (req.user.role != "admin") return res.redirect("/");
 
   return res.render("add_book.ejs");
-});
-
-app.post("/add_book", async (req, res) => {
-  if (!req.body) return res.send("Server Error").status(500);
-
-  const URL = "https://openlibrary.org/search.json";
-  const PARAMS = new URLSearchParams({
-    author: req.body.author,
-    title: req.body.title,
-    limit: 5,
-    fields: "title,author_name,cover_i, publish_year",
-  }).toString();
-  const BOOK_DATA = await fetch(`${URL}?${PARAMS}`);
-  const BOOKS = await BOOK_DATA.json();
-
-  return res.render("add_book.ejs", { books: BOOKS, categories: CATEGORIES });
 });
 
 app.post("/submit", async (req, res) => {
