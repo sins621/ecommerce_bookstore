@@ -231,7 +231,8 @@ app.get("/add_cart", async (req, res) => {
 });
 
 app.get("/user_panel", async (req, res) => {
-  if (req.user.role !== "admin") res.redirect("/login");
+  if (!req.isAuthenticated()) return res.redirect("/login");
+  if (req.user.role !== "admin") return res.redirect("/login");
   const SITE_USERS = await databaseHandler.fetchAllUsersRoles();
   return res.render("user_panel.ejs", { site_users: SITE_USERS });
 });

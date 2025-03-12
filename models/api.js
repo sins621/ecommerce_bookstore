@@ -14,7 +14,6 @@ export default class API {
 
   async updateRoleRoute() {
     this.app.post("/update_role", async (req, res) => {
-      console.log(req.body);
       this.db.updateRole(req.body.role, req.body.email)
     });
   }
