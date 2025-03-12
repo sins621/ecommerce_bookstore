@@ -3,8 +3,8 @@
     <th>email</th>
     <th>role</th>
   </tr>
-  <% if (locals.site_users.length > 0) { %> <% site_users.forEach((site_user) =>
-  { %>
+  <% if (locals.site_users.length > 0) { %>
+  <% site_users.forEach((site_user) => { %>
   <tr>
     <td><%= site_user.email %></td>
     <td>
@@ -13,6 +13,7 @@
         <option <% if (site_user.role === "user") { %> selected="selected" <% } %> value="user">user</option>
       </select>
     </td>
+    <td><button onclick="deleteUser('<%= site_user.email %>')">Remove User</button></td>
     <% }); %>
   </tr>
   <% } else { %>
@@ -22,18 +23,34 @@
 
 <script>
   const selectDropdowns = document.querySelectorAll("select");
-  selectDropdowns.forEach( async(selectDropdown) => {
-    selectDropdown.addEventListener("change", async function (event) {
+  selectDropdowns.forEach(async (selectDropdown) => {
+    selectDropdown.addEventListener("change", async function(event) {
       let email = event.target.dataset.email;
       let value = event.target.value;
       await fetch("/update_role", {
-        method:"POST", 
-        headers:{
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email: email, role: value})
+        body: JSON.stringify({
+          email: email,
+          role: value
+        })
       });
     });
   });
+
+  async function deleteUser(email) {
+    await fetch("/delete_user", {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email
+      })
+    })
+  }
 </script>

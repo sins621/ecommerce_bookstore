@@ -9,12 +9,19 @@ export default class API {
 
   async setupEndpoints() {
     this.updateRoleRoute();
+    this.deleteUserRoute();
     this.geminiPromptRoute();
   }
 
   async updateRoleRoute() {
     this.app.post("/update_role", async (req, res) => {
       this.db.updateRole(req.body.role, req.body.email)
+    });
+  }
+
+  async deleteUserRoute() {
+    this.app.delete("/delete_user", async (req, res) => {
+      console.log(req.body)
     });
   }
 
