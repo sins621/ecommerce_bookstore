@@ -271,4 +271,39 @@ export default class DatabaseHandler {
       [role, email]
     );
   }
+
+  async deleteUser(email) {
+    const USER_ID = (await this.fetchUsersBy("email", email))[0].id;
+    await this.database.query(
+      `
+      DELETE FROM user_roles
+      WHERE email = $1
+      `,
+      [email]
+    );
+
+    await this.database.query(
+      `
+      DELETE FROM subscribers
+      WHERE email = $1
+      `,
+      [email]
+    );
+
+    await this.database.query(
+      `
+      DELETE FROM carts
+      WHERE user_id = $1
+      `,
+      [USER_ID]
+    );
+
+    await this.database.query(
+      `
+      DELETE FROM users
+      WHERE email = $1
+      `,
+      [email]
+    );
+  }
 }

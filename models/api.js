@@ -21,7 +21,7 @@ export default class API {
 
   async deleteUserRoute() {
     this.app.delete("/delete_user", async (req, res) => {
-      console.log(req.body)
+      await this.db.deleteUser(req.body.email);
     });
   }
 
