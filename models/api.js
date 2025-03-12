@@ -1,23 +1,25 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default class API {
-  constructor(app) {
+  constructor(app, db) {
     this.app = app;
+    this.db = db;
     this.setupEndpoints();
   }
 
   async setupEndpoints() {
-    this.getUserTable();
-    this.geminiPrompt();
+    this.updateRoleRoute();
+    this.geminiPromptRoute();
   }
 
-  async getUserTable() {
-    this.app.get("/", (req, res) => {
-      
+  async updateRoleRoute() {
+    this.app.post("/update_role", async (req, res) => {
+      console.log(req.body);
+      this.db.updateRole(req.body.role, req.body.email)
     });
   }
 
-  async geminiPrompt(){
+  async geminiPromptRoute() {
     this.app.get("/api/ai_abstract", async (req, res) => {
       const AUTHOR = req.query.author;
       const TITLE = req.query.title;
@@ -26,7 +28,7 @@ export default class API {
       const PROMPT = `Provide a 20-30 word abstract for the Book ${TITLE} by ${AUTHOR}`;
       const RESULT = await MODEL.generateContent(PROMPT);
       const TEXT = RESULT.response.candidates[0].content.parts[0].text;
-    
+
       return res.send(TEXT);
     });
   }

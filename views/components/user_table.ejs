@@ -19,15 +19,21 @@
   <p>No Users</p>
   <% } %>
 </table>
+
 <script>
   const selectDropdowns = document.querySelectorAll("select");
-  selectDropdowns.forEach((selectDropdown) => {
-    selectDropdown.addEventListener("change", function (event) {
-      // console.log(selectDropdowns.value);
+  selectDropdowns.forEach( async(selectDropdown) => {
+    selectDropdown.addEventListener("change", async function (event) {
       let email = event.target.dataset.email;
-      console.log(email);
       let value = event.target.value;
-      console.log(value);
+      await fetch("/update_role", {
+        method:"POST", 
+        headers:{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email: email, role: value})
+      });
     });
   });
 </script>

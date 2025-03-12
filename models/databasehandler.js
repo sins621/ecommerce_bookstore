@@ -259,4 +259,16 @@ export default class DatabaseHandler {
       )
     ).rows;
   }
+
+  async updateRole(role, email) {
+    return await this.database.query(
+      `
+      UPDATE user_roles
+      SET role = $1
+      WHERE email = $2
+      RETURNING id
+      `,
+      [role, email]
+    );
+  }
 }

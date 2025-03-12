@@ -61,6 +61,7 @@ const CATEGORIES = [
 const SALT_ROUNDS = 10;
 
 const mailer = new Mailer(process.env.MAIL_USER, process.env.MAIL_PASS);
+const api = new API(app, databaseHandler);
 
 // Home
 app.get("/", async (req, res) => {
@@ -333,8 +334,6 @@ passport.serializeUser((user, callback) => {
 passport.deserializeUser((user, callback) => {
   callback(null, user);
 });
-
-const api = new API(app);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
