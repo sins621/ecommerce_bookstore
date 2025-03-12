@@ -1,5 +1,5 @@
 <style>
-  #book{
+  #book {
     display: flex;
     flex-direction: vertical;
     justify-content: center;
@@ -10,16 +10,13 @@
     height: 100px;
   }
 
-  #book h3, h4{
-  }
-
+  #book h3,
+  h4 {}
 </style>
 <div id="book">
   <div>
     <a href="<%= url_for('book_focus', {book_id : book.id}) %>">
-      <img
-        src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-M.jpg"
-      />
+      <img src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-M.jpg" />
     </a>
     <div class="book-content">
       <h3><%= book.title %></h3>

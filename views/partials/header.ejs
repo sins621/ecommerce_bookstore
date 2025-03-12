@@ -1,5 +1,5 @@
 <style>
-  #titlebar{
+  #titlebar {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -14,23 +14,25 @@
       </a>
     </div>
     <div>
-      <a href="/"><h1>Knowl & Tree Bookstore</h1></a>
+      <a href="/">
+        <h1>Knowl & Tree Bookstore</h1>
+      </a>
     </div>
     <div class="nav">
       <nav>
         <a href="#">About</a>
         <a href="#">Contact</a>
         <% if (locals.user) { %>
-          <% if (user.role === "admin") { %>
-            <a href="<%= url_for('add_book') %>">Add</a>
-          <% } else { %>
-          <% } %>
-          <a href="/cart">Cart</a>
-          <p><%= user.cart.length %></p>
-          <a href="/logout">Logout</a>
+        <% if (user.role === "admin") { %>
+        <a href="<%= url_for('add_book') %>">Add</a>
         <% } else { %>
-          <a href="/register">Register</a>
-          <a href="/login">Login</a>
+        <% } %>
+        <a href="/cart">Cart</a>
+        <p><%= user.cart.length %></p>
+        <a href="/logout">Logout</a>
+        <% } else { %>
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
         <% } %>
       </nav>
     </div>

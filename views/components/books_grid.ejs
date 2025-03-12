@@ -6,19 +6,19 @@
 </style>
 <div id="">
   <% if (locals.books && locals.categories) { %>
-    <% categories.forEach((category)=> { %>
-      <% if (books.some(book => book.category === category)) { %>
-        <h2 class="">
-          <a><%= category %></a>
-        </h2>
-        <div id="books-grid">
-          <% books.forEach((book)=> { %>
-            <% if (book.category==category) { %>
-              <%- include ('book', {book: book}); %>
-            <% } %>
-          <% }); %>
-        </div>
-      <% } %>
+  <% categories.forEach((category)=> { %>
+  <% if (books.some(book => book.category === category)) { %>
+  <h2 class="">
+    <a><%= category %></a>
+  </h2>
+  <div id="books-grid">
+    <% books.forEach((book)=> { %>
+    <% if (book.category==category) { %>
+    <%- include ('book', {book: book}); %>
+    <% } %>
     <% }); %>
+  </div>
+  <% } %>
+  <% }); %>
   <% } %>
 </div>
