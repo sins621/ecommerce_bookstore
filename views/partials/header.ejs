@@ -28,7 +28,7 @@
         <% } else { %>
         <% } %>
         <a href="/cart">Cart</a>
-        <p><%= user.cart.length %></p>
+        <p id="cart-size"><%= //user.cart.length %></p>
         <a href="/logout">Logout</a>
         <% } else { %>
         <a href="/register">Register</a>
@@ -38,3 +38,10 @@
     </div>
   </div>
 </header>
+<script>
+  const cartNum = document.getElementById("cart-size");
+
+  function updateCart(){
+    
+  }
+</script>
