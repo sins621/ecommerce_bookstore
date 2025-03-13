@@ -10,7 +10,8 @@
   <div id="titlebar">
     <div>
       <a href="/">
-        <img src="./img/logo/Logo_Cropped.png" width="100" />
+        <img src="./img/logo/Logo_Cropped.png"
+             width="100" />
       </a>
     </div>
     <div>
@@ -28,7 +29,7 @@
         <% } else { %>
         <% } %>
         <a href="/cart">Cart</a>
-        <p><%= user.cart.length %></p>
+        <p id="cart-num"><%= //user.cart.length %></p>
         <a href="/logout">Logout</a>
         <% } else { %>
         <a href="/register">Register</a>
@@ -38,3 +39,7 @@
     </div>
   </div>
 </header>
+
+<script>
+  document.getElementById("cart-num")
+</script>
