@@ -1,10 +1,5 @@
 export default class MyInterface {
-  constructor({
-    views = null,
-    databaseHandler = null,
-    api = null,
-    mailer = null,
-  } = {}) {
+  constructor(views, databaseHandler, api, mailer) {
     this.views = views;
     this.databaseHandler = databaseHandler;
     this.api = api;
@@ -16,7 +11,7 @@ export default class MyInterface {
     this.views.home(BOOKS, CATEGORIES);
   }
 
-  async addBook(){
+  async addBook() {
     this.api.addBookRoute(this.fetchBooks);
   }
 

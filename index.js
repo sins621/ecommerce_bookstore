@@ -65,13 +65,7 @@ const SALT_ROUNDS = 10;
 const mailer = new Mailer(process.env.MAIL_USER, process.env.MAIL_PASS);
 const api = new API(app);
 const views = new Views(app);
-const myInterface = new MyInterface({
-  app: app,
-  databaseHandler: databaseHandler,
-  views: views,
-  mailer: mailer,
-  api: api,
-});
+const myInterface = new MyInterface(views, databaseHandler, api, mailer);
 
 myInterface.home(CATEGORIES);
 
