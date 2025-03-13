@@ -58,6 +58,7 @@ const SALT_ROUNDS = 10;
 
 const mailer = new Mailer(process.env.MAIL_USER, process.env.MAIL_PASS);
 
+//View Routes
 // Home
 app.get("/", async (req, res) => {
   var books = await databaseHandler.fetchAllBooks();
@@ -209,20 +210,20 @@ app.get("/cart", async (req, res) => {
   return res.render("cart.ejs", { user: req.user });
 });
 
-app.get("/add_cart", async (req, res) => {
+app.post("/add_cart", async (req, res) => {
   const BOOK_INFO = await databaseHandler.addBookToCart(
-    req.query.book_id,
-    req.user.id
+    req.body.book_id,
+    req.body.user_id
   );
-
-  databaseHandler.addLog({
-    event: "Add",
-    object: "Cart",
-    description: `User: ${req.user.email} Added ${BOOK_INFO.book_title} to Their Cart`,
-    createdBy: req.user.email,
-  });
-  req.user.cart = await databaseHandler.fetchCartItems(req.user.id);
-  return res.redirect(`/book_focus?book_id=${req.query.book_id}`);
+  console.log(req.body.book_id, req.body.user_id);
+  console.log(BOOK_INFO);
+  // databaseHandler.addLog({
+  //   event: "Add",
+  //   object: "Cart",
+  //   description: `User: ${req.user.email} Added ${BOOK_INFO.book_title} to Their Cart`,
+  //   createdBy: req.user.email,
+  // });
+  return res.send("OK").status(200);
 });
 
 app.get("/user_panel", async (req, res) => {
@@ -284,6 +285,14 @@ app.post("/register", async (req, res) => {
 
     return res.redirect("/");
   });
+});
+
+// API Routes
+
+app.get("/fetch_cart_size", async (req, res) => {
+  const USER_ID = req.query.user_id;
+  const CART = await databaseHandler.fetchCartItems(USER_ID);
+  return res.json({ cart_size: CART.length });
 });
 
 app.post("/update_role", async (req, res) => {

@@ -40,8 +40,15 @@
 </header>
 <script>
   const cartNum = document.getElementById("cart-size");
+  <% if (locals.user) { %>
+  const userId = <%= user.id %>;
+  updateCart(userId, cartNum);
+  <% } %>
 
-  function updateCart(){
-    
+  async function updateCart(userId) {
+    const QUERY = await fetch(`/fetch_cart_size?user_id=${userId}`)
+    const CART_SIZE = await QUERY.json();
+    cartNum.innerHTML = CART_SIZE.cart_size;
+    console.log(CART_SIZE)
   }
 </script>

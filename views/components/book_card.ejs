@@ -10,7 +10,8 @@
 </style>
 <div class="book-focus">
   <div class="cover-focus">
-    <img id="cover" src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-L.jpg" />
+    <img id="cover"
+        src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-L.jpg" />
   </div>
   <div class="book-info-focus">
     <h3><%= book.title %></h3>
@@ -24,9 +25,31 @@
   <div class="price-focus">
     <p><strong>R<%= book.price %></strong></p>
     <% if (locals.user) { %>
-    <a href="/add_cart?book_id=<%= book.id %>" class="button">Add to Cart</a>
+    <button onclick="addToCart(<%= user.id %>, <%= book.id %>)">Add to
+      Cart</button>
     <% } else { %>
     <a href="/login" class="button">Add to Cart</a>
     <% } %>
   </div>
 </div>
+<script>
+  async function addToCart(userId, bookId) {
+    console.log("updating cart");
+    const RESPONSE = await fetch("/add_cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        book_id: bookId,
+        user_id: userId,
+      })
+    });
+    if (RESPONSE.status === 200) {
+      await updateCart(
+        userId); // Ensure the cart updates only after the request succeeds
+    } else {
+      console.error("Failed to add to cart:", RESPONSE.status);
+    }
+  }
+</script>
