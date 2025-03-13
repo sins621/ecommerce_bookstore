@@ -202,30 +202,6 @@ function today() {
   return yyyy + "-" + mm + "-" + dd;
 }
 
-app.get("/cart", async (req, res) => {
-  if (req.isAuthenticated() === false) return res.render("login.ejs");
-
-  req.user.cart = await databaseHandler.fetchCartItems(req.user.id);
-
-  return res.render("cart.ejs", { user: req.user });
-});
-
-app.post("/add_cart", async (req, res) => {
-  const BOOK_INFO = await databaseHandler.addBookToCart(
-    req.body.book_id,
-    req.body.user_id
-  );
-  console.log(req.body.book_id, req.body.user_id);
-  console.log(BOOK_INFO);
-  // databaseHandler.addLog({
-  //   event: "Add",
-  //   object: "Cart",
-  //   description: `User: ${req.user.email} Added ${BOOK_INFO.book_title} to Their Cart`,
-  //   createdBy: req.user.email,
-  // });
-  return res.send("OK").status(200);
-});
-
 app.get("/user_panel", async (req, res) => {
   if (!req.isAuthenticated()) return res.redirect("/login");
   if (req.user.role !== "admin") return res.redirect("/login");
@@ -288,6 +264,27 @@ app.post("/register", async (req, res) => {
 });
 
 // API Routes
+app.get("/cart", async (req, res) => {
+  const CART = await databaseHandler.fetchCartItems(req.query.user_id);
+  console.log(CART);
+  return res.json(CART);
+});
+
+app.post("/add_cart", async (req, res) => {
+  const BOOK_INFO = await databaseHandler.addBookToCart(
+    req.body.book_id,
+    req.body.user_id
+  );
+  console.log(req.body.book_id, req.body.user_id);
+  console.log(BOOK_INFO);
+  // databaseHandler.addLog({
+  //   event: "Add",
+  //   object: "Cart",
+  //   description: `User: ${req.user.email} Added ${BOOK_INFO.book_title} to Their Cart`,
+  //   createdBy: req.user.email,
+  // });
+  return res.send("OK").status(200);
+});
 
 app.get("/fetch_cart_size", async (req, res) => {
   const USER_ID = req.query.user_id;
