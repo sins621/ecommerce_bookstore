@@ -8,11 +8,7 @@ import { Strategy } from "passport-local";
 import session from "express-session";
 import DatabaseHandler from "./models/databasehandler.js";
 import Mailer from "./models/mailer.js";
-import API from "./models/api.js";
-
-// TODO: Error Handling
-// TODO: Continue Migration of db Functions to db Class.
-// FIX: HTML Characters Ending Up in Cart Names
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
 app.use(
@@ -61,7 +57,6 @@ const CATEGORIES = [
 const SALT_ROUNDS = 10;
 
 const mailer = new Mailer(process.env.MAIL_USER, process.env.MAIL_PASS);
-const api = new API(app, databaseHandler);
 
 // Home
 app.get("/", async (req, res) => {
@@ -289,6 +284,27 @@ app.post("/register", async (req, res) => {
 
     return res.redirect("/");
   });
+});
+
+app.post("/update_role", async (req, res) => {
+  await databaseHandler.updateRole(req.body.role, req.body.email);
+});
+
+app.delete("/delete_user", async (req, res) => {
+  await databaseHandler.deleteUser(req.body.email);
+});
+
+app.get("/api/ai_abstract", async (req, res) => {
+  console.log(req.query);
+  const AUTHOR = req.query.author;
+  const TITLE = req.query.title;
+  const GEN_AI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
+  const MODEL = GEN_AI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const PROMPT = `Provide a 20-30 word abstract for the Book ${TITLE} by ${AUTHOR}`;
+  const RESULT = await MODEL.generateContent(PROMPT);
+  const TEXT = RESULT.response.candidates[0].content.parts[0].text;
+
+  return res.send(TEXT);
 });
 
 //Login Strategy
