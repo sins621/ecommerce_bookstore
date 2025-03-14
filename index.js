@@ -6,8 +6,8 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
-import DatabaseHandler from "./models/databasehandler.js";
-import Mailer from "./models/mailer.js";
+import * as databaseHandler from "./databasehandler.js";
+import { notifySubscribers } from "./mailer.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
@@ -27,36 +27,7 @@ app.use(passport.session());
 
 const PORT = 6199;
 
-const CLIENT_INFO = {
-  user: "postgres",
-  host: process.env.DB_HOST,
-  database: "book_website",
-  password: process.env.DB_PASS,
-  port: 5432,
-};
-
-const databaseHandler = new DatabaseHandler(CLIENT_INFO);
-
-const CATEGORIES = [
-  "Fantasy",
-  "Horror",
-  "Historical Fiction",
-  "Mystery",
-  "Literary Fiction",
-  "Thriller",
-  "Science Fiction",
-  "Philosophical",
-  "Religious",
-  "Drama",
-  "Comedy",
-  "Crime and Detective",
-  "Self Help",
-  "Non-fiction",
-];
-
 const SALT_ROUNDS = 10;
-
-const mailer = new Mailer(process.env.MAIL_USER, process.env.MAIL_PASS);
 
 //View Routes
 // Home
@@ -66,19 +37,7 @@ app.get("/", async (req, res) => {
   if (books.length === 0) return res.send("Error Retrieving Books").status(500);
 
   return res.render("index.ejs", {
-    categories: CATEGORIES,
-    books: books,
-    user: req.user,
-  });
-});
-
-app.get("/filter", async (req, res) => {
-  var books = databaseHandler.fetchAllBooks({ category: req.query.category });
-
-  if (books.length === 0) return res.send("Error Retrieving Books").status(500);
-
-  return res.render("index.ejs", {
-    categories: CATEGORIES,
+    categories: await databaseHandler.fetchCategories(),
     books: books,
     user: req.user,
   });
@@ -105,7 +64,10 @@ app.post("/add_book", async (req, res) => {
   const BOOK_DATA = await fetch(`${URL}?${PARAMS}`);
   const BOOKS = await BOOK_DATA.json();
 
-  return res.render("add_book.ejs", { books: BOOKS, categories: CATEGORIES });
+  return res.render("add_book.ejs", {
+    books: BOOKS,
+    categories: await databaseHandler.fetchCategories(),
+  });
 });
 
 app.post("/submit", async (req, res) => {
@@ -131,7 +93,7 @@ app.post("/submit", async (req, res) => {
 
   const SUBSCRIBERS = await databaseHandler.fetchSubscribers();
 
-  mailer.notifySubscribers(
+  notifySubscribers(
     SUBSCRIBERS,
     `${BOOK.title} just got added to the Catalog!`,
     `${BOOK.title} by ${BOOK.author_name}.
@@ -263,8 +225,13 @@ app.post("/register", async (req, res) => {
   });
 });
 
-// API Routes
 app.get("/cart", async (req, res) => {
+  if (!req.user.isAuthenticated()) return res.redirect("/login");
+  return res.render("cart.ejs");
+});
+
+// API Routes
+app.get("/fetch_cart", async (req, res) => {
   const CART = await databaseHandler.fetchCartItems(req.query.user_id);
   console.log(CART);
   return res.json(CART);
