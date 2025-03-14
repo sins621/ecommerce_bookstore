@@ -82,13 +82,13 @@ export async function addBookReview(reviewInfo) {
       INSERT INTO book_reviews (
         review_title,
         reviewer_name,
-        review_date,
         review_text,
         user_id,
         review_rating,
-        book_id
+        book_id,
+        review_date
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      VALUES ($1, $2, $3, $4, $5, $6, now())
       RETURNING *
        `,
       reviewInfo
@@ -142,6 +142,16 @@ export async function fetchUsersBy(filter, value) {
             SELECT * FROM users 
             WHERE email = $1
             `,
+          [value]
+        )
+      ).rows;
+    case "id":
+      return (
+        await database.query(
+          `
+              SELECT * FROM users 
+              WHERE id = $1
+              `,
           [value]
         )
       ).rows;
@@ -306,15 +316,17 @@ export async function deleteUser(email) {
   );
 }
 
-export async function fetchCategories(){
-  const categoryObjects = (await database.query(
-    `
+export async function fetchCategories() {
+  const categoryObjects = (
+    await database.query(
+      `
     SELECT name FROM public.categories
     `
-  )).rows
-  const categories = []
+    )
+  ).rows;
+  const categories = [];
   categoryObjects.map((category) => {
-    categories.push(category.name)
-  })
-  return categories
+    categories.push(category.name);
+  });
+  return categories;
 }

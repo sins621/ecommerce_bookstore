@@ -24,7 +24,7 @@ app.use(express.static("public"));
 app.use(morgan("tiny"));
 app.use(passport.initialize());
 app.use(passport.session());
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 const PORT = 6199;
 const SALT_ROUNDS = 10;
@@ -120,16 +120,19 @@ app.get("/book_focus", async (req, res) => {
 });
 
 app.post("/add_review", async (req, res) => {
-  if (!req.user || !req.body) return res.send("Server Error").status(500);
+  const USER_DATA = (
+    await databaseHandler.fetchUsersBy("id", req.body.user_id)
+  )[0];
+
   const REVIEW_INFO = await databaseHandler.addBookReview([
-    req.body.title,
-    req.user.name,
-    today(),
-    req.body.review,
-    req.user.id,
+    req.body.review_title,
+    USER_DATA.name,
+    req.body.review_text,
+    USER_DATA.id,
     req.body.rating,
     req.body.book_id,
   ]);
+  console.log(REVIEW_INFO);
   databaseHandler.addLog({
     event: "Add",
     object: "Review",
@@ -138,28 +141,11 @@ app.post("/add_review", async (req, res) => {
     }" to ${
       (await databaseHandler.fetchBooksBy("id", REVIEW_INFO.book_id))[0].title
     }`,
-    createdBy: req.user.email,
+    createdBy:USER_DATA.email,
   });
 
-  res.redirect(`/book_focus?book_id=${req.body.book_id}`);
+  res.json({OK: "Review Added Successfully"}).status(200);
 });
-
-function today() {
-  let today = new Date();
-  let dd = today.getDate();
-  let mm = today.getMonth() + 1;
-  let yyyy = today.getFullYear();
-
-  if (dd < 10) {
-    dd = "0" + dd;
-  }
-
-  if (mm < 10) {
-    mm = "0" + mm;
-  }
-
-  return yyyy + "-" + mm + "-" + dd;
-}
 
 app.get("/user_panel", async (req, res) => {
   if (!req.isAuthenticated()) return res.redirect("/login");
@@ -267,11 +253,10 @@ app.get("/fetch_books", async (req, res) => {
 
 app.get("/fetch_book_card", async (req, res) => {
   const BOOK_ID = req.query.book_id;
-  const BOOK = await databaseHandler.fetchBooksBy("id", BOOK_ID)
-  console.log(BOOK[0]);
+  const BOOK = await databaseHandler.fetchBooksBy("id", BOOK_ID);
   return res.render("components/book_card.ejs", {
     book: BOOK[0],
-    user: req.user
+    user: req.user,
   });
 });
 

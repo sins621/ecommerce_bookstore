@@ -12,17 +12,43 @@
 <% } %>
 <hr />
 <% if (locals.user) { %>
-<form id="review-form" action="/add_review" method="post">
+<div id="review-form">
   <input type="text" name="title" placeholder="Title" /><br />
-  <input type="hidden" name="user_name" value="<%= user.name %>">
   <input type="text" name="review" placeholder="Review" /><br />
-  <input type="hidden" name="user_id" value="<%= user.id %>">
   <input type="text" name="rating" placeholder="Rating Out of 5" /><br />
+  <button onclick="postReview(<%= user.id %>)">Post</button>
+  <input type="hidden" name="user_id" value="<%= user.id %>">
   <input type="hidden" name="book_id" value="<%= book.id %>">
-  <input type="submit" value="Post" />
-</form>
+  <input type="hidden" name="user_name" value="<%= user.name %>">
+</div>
 <% } %>
 <script>
+  async function postReview(userId) {
+    const reviewTitle = document.getElementsByName("title")[0].value;
+    const reviewText = document.getElementsByName("review")[0].value;
+    const rating = document.getElementsByName("rating")[0].value;
+    const response = await fetch('/add_review', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        review_title: reviewTitle,
+        review_text: reviewText,
+        rating: rating,
+        user_id: userId,
+        book_id: bookId
+      })
+    })
+    
+    if (response.status){
+      fetchReviews();
+    } else {
+      console.log("Fetching Reviews Failed.")
+    }
+  }
+
   function show_form() {
     let review_form = document.getElementById("review-form");
     if (review_form.style.display === "block") {
