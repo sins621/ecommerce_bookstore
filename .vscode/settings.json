@@ -1,7 +1,11 @@
 {
+  "files.associations": {
+    "*.ejs": "html"
+  },
   "emmet.includeLanguages": {
     "ejs": "html"
   },
+  "html.format.templating": true,
   "[html]": {
     "editor.defaultFormatter": "j69.ejs-beautify"
   }

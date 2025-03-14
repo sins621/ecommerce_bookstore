@@ -7,7 +7,8 @@
 
 <body>
   <%- include ('partials/header'); %>
-  <%- include ('components/book_card'); %>
+  <div id="book-card""></div>
+  <%- // include ('components/book_card'); %>
   <h3>Reviews</h3>
   <%- include ('components/review_form'); %>
   <%- include ('components/reviews'); %>
@@ -15,3 +16,16 @@
 </body>
 
 </html>
+<script>
+  let urlParams = window.location.search
+  let getQuery = urlParams.split('?')[1]
+  let params = getQuery.split('&')
+  let bookId = params[0].split('=')[1];
+  console.log(params)
+  async function fetchBookCard(){
+    const bookCardDiv = document.getElementById("book-card")
+    const bookCard = await fetch(`/fetch_book_card?book_id=${bookId}`)
+    bookCardDiv.innerHTML = await bookCard.text()
+  }
+  fetchBookCard();
+</script>

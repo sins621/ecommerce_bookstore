@@ -24,6 +24,7 @@ app.use(express.static("public"));
 app.use(morgan("tiny"));
 app.use(passport.initialize());
 app.use(passport.session());
+app.set('view engine', 'ejs');
 
 const PORT = 6199;
 const SALT_ROUNDS = 10;
@@ -34,10 +35,7 @@ app.get("/", async (req, res) => {
   var books = await databaseHandler.fetchAllBooks();
 
   if (books.length === 0) return res.send("Error Retrieving Books").status(500);
-
   return res.render("index.ejs", {
-    categories: await databaseHandler.fetchCategories(),
-    books: books,
     user: req.user,
   });
 });
@@ -256,6 +254,25 @@ app.get("/fetch_cart_size", async (req, res) => {
   const USER_ID = req.query.user_id;
   const CART = await databaseHandler.fetchCartItems(USER_ID);
   return res.json({ cart_size: CART.length });
+});
+
+app.get("/fetch_books", async (req, res) => {
+  const BOOKS = await databaseHandler.fetchAllBooks();
+  const CATEGORIES = await databaseHandler.fetchCategories();
+  return res.render("components/books_grid.ejs", {
+    books: BOOKS,
+    categories: CATEGORIES,
+  });
+});
+
+app.get("/fetch_book_card", async (req, res) => {
+  const BOOK_ID = req.query.book_id;
+  const BOOK = await databaseHandler.fetchBooksBy("id", BOOK_ID)
+  console.log(BOOK[0]);
+  return res.render("components/book_card.ejs", {
+    book: BOOK[0],
+    user: req.user
+  });
 });
 
 app.post("/update_role", async (req, res) => {
