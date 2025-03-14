@@ -26,7 +26,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const PORT = 6199;
-
 const SALT_ROUNDS = 10;
 
 //View Routes
