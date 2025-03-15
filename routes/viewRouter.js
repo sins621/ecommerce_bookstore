@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get("/", viewController.home);
 router.get("/book/:id", viewController.book);
+router.get("/add-book", viewController.addBook);
 router.get("/login", viewController.loginForm);
 router.post(
   "/login",

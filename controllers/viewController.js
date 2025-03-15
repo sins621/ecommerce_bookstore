@@ -47,6 +47,11 @@ const viewController = {
     });
   },
 
+  addBook: (req, res) => {
+    // if (!req.isAuthenticated() || req.user.role != "admin") return res.redirect("/login");
+    return res.render("add_book.ejs");
+  },
+
   loginForm: (req, res) => {
     if (req.isAuthenticated()) return res.redirect("/");
     return res.render("login.ejs");
