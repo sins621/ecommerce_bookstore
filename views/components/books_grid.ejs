@@ -14,7 +14,7 @@
   <div id="books-grid">
     <% books.forEach((book)=> { %>
     <% if (book.category==category) { %>
-    <%- include ('book', {book: book}); %>
+    <%- include ('book_item', {book: book}); %>
     <% } %>
     <% }); %>
   </div>

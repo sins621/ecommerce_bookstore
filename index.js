@@ -102,7 +102,7 @@ Visit your nearest Knowl & Tree Bookstore to Grab a Copy!`
   return res.redirect("/");
 });
 
-app.get("/book_focus/:book_id", async (req, res) => {
+app.get("/book/:book_id", async (req, res) => {
   if (!req.query) return res.send("Server Error").status(500);
 
   const BOOK_ID = req.params.book_id;
@@ -113,7 +113,7 @@ app.get("/book_focus/:book_id", async (req, res) => {
 
   var reviews = await databaseHandler.fetchBookReviews(book.id);
 
-  return res.render("book_focus.ejs", {
+  return res.render("book.ejs", {
     book: book,
     user: req.user,
     reviews: reviews,
