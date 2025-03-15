@@ -1,11 +1,11 @@
-.footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+* {
+  margin: 0px;
+  padding: 0px;
 }
 
-.footer > div {
-  width: 30%;
+body {
+  max-width: 1000px;
+  margin: auto;
 }
 
 .header {
@@ -17,4 +17,39 @@
 
 .header-logo img {
   width: 100px;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer > div {
+  width: 30%;
+}
+
+.book-collection-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.book-collection-item {
+  display: flex;
+  flex-direction: vertical;
+  justify-content: center;
+  text-align: center;
+}
+
+.book-collection-item img {
+  height: 100px;
+}
+
+@media (max-width: 1000px) {
+  body {
+    max-width: auto;
+  }
+}
+
+@media (max-width: 700px) {
 }

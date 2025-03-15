@@ -6,9 +6,9 @@ import { Strategy } from "passport-local";
 import bcrypt from "bcrypt";
 import morgan from "morgan";
 import databaseService from "./services/databaseService.js";
-import userRoutes from './routes/userRoutes.js';
-import bookRoutes from './routes/bookRoutes.js';
-import viewRoutes from './routes/viewRoutes.js';
+import userRoutes from './routes/userRouter.js';
+import bookRoutes from './routes/bookRouter.js';
+import viewRoutes from './routes/viewRouter.js';
 import { fileURLToPath } from 'url';
 import "dotenv/config";
 

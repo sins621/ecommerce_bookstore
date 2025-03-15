@@ -12,6 +12,9 @@
   <%- include('partials/header') %>
   <% } %>
   <hr>
+  <main>
+    <%- include('components/book_collection', {books, categories}) %>
+  </main>
   <%- include('partials/footer') %>
 </body>
 <script src="scripts/scripts.js"></script>

@@ -1,23 +1,13 @@
-<style>
-  #book {
-    display: flex;
-    flex-direction: vertical;
-    justify-content: center;
-    text-align: center;
-  }
-
-  #book img {
-    height: 100px;
-  }
-</style>
-<div id="book">
+<div class="book-collection-item">
   <div>
     <a href="/book/<%= book.id %>">
       <img
           src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-M.jpg" />
     </a>
     <div class="book-content">
-      <h3><%= book.title %></h3>
+      <a href="/book/<%= book.id %>">
+        <h3><%= book.title %></h3>
+      </a>
       <h4><%= book.author %> <%= book.publish_year %></h4>
       <p><strong>R<%= book.price %></strong><br /></p>
     </div>

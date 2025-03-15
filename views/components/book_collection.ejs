@@ -1,20 +1,14 @@
-<style>
-  #books-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-  }
-</style>
-<div id="">
+<div class="book-collection">
   <% if (locals.books && locals.categories) { %>
   <% categories.forEach((category)=> { %>
   <% if (books.some(book => book.category === category)) { %>
-  <h2 class="">
+  <h2 class="book-collection-category">
     <a><%= category %></a>
   </h2>
-  <div id="books-grid">
+  <div class="book-collection-grid">
     <% books.forEach((book)=> { %>
     <% if (book.category==category) { %>
-    <%- include ('book_item', {book: book}); %>
+    <%- include ('book_collection_item', {book: book}); %>
     <% } %>
     <% }); %>
   </div>
