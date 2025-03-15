@@ -17,11 +17,9 @@
 
 </html>
 <script>
-  let urlParams = window.location.search
-  let getQuery = urlParams.split('?')[1]
-  let params = getQuery.split('&')
-  let bookId = params[0].split('=')[1];
-  console.log(params)
+  const pathSegments = window.location.pathname.split('/');
+  const bookId = pathSegments[pathSegments.length - 1];
+
   async function fetchBookCard(){
     const bookCardDiv = document.getElementById("book-card")
     const bookCard = await fetch(`/fetch_book_card?book_id=${bookId}`)
