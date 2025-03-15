@@ -1,0 +1,54 @@
+<style>
+  #titlebar {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+</style>
+<header>
+  <div id="class">
+    <div>
+      <a href="/">
+        <img src="/img/logo/Logo_Cropped.png" width="100" />
+      </a>
+    </div>
+    <div>
+      <a href="/">
+        <h1>Knowl & Tree Bookstore</h1>
+      </a>
+    </div>
+    <div class="nav">
+      <nav>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <% if (locals.user) { %>
+        <% if (user.role === "admin") { %>
+        <a href="<%= url_for('add_book') %>">Add</a>
+        <% } else { %>
+        <% } %>
+        <a href="/cart">Cart</a>
+        <p id="cart-size"><%= //user.cart.length %></p>
+        <a href="/logout">Logout</a>
+        <% } else { %>
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+        <% } %>
+      </nav>
+    </div>
+  </div>
+</header>
+<script>
+  const cartNum = document.getElementById("cart-size");
+  <% if (locals.user) { %>
+  const userId = <%= user.id %>;
+  updateCart(userId, cartNum);
+  <% } %>
+
+  async function updateCart(userId) {
+    const QUERY = await fetch(`/fetch_cart_size?user_id=${userId}`)
+    const CART_SIZE = await QUERY.json();
+    cartNum.innerHTML = CART_SIZE.cart_size;
+    console.log(CART_SIZE)
+  }
+</script>

@@ -1,19 +1,11 @@
-<style>
-  #titlebar {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-</style>
 <header>
-  <div id="titlebar">
-    <div>
+  <div class="header">
+    <div class="header-logo">
       <a href="/">
-        <img src="/img/logo/Logo_Cropped.png" width="100" />
+        <img src="/img/logo/Logo_Cropped.png" alt="Company Logo">
       </a>
     </div>
-    <div>
+    <div class="title">
       <a href="/">
         <h1>Knowl & Tree Bookstore</h1>
       </a>
@@ -28,7 +20,7 @@
         <% } else { %>
         <% } %>
         <a href="/cart">Cart</a>
-        <p id="cart-size"><%= //user.cart.length %></p>
+        <p id="cart-size"><%= cart.length %></p>
         <a href="/logout">Logout</a>
         <% } else { %>
         <a href="/register">Register</a>
@@ -38,17 +30,3 @@
     </div>
   </div>
 </header>
-<script>
-  const cartNum = document.getElementById("cart-size");
-  <% if (locals.user) { %>
-  const userId = <%= user.id %>;
-  updateCart(userId, cartNum);
-  <% } %>
-
-  async function updateCart(userId) {
-    const QUERY = await fetch(`/fetch_cart_size?user_id=${userId}`)
-    const CART_SIZE = await QUERY.json();
-    cartNum.innerHTML = CART_SIZE.cart_size;
-    console.log(CART_SIZE)
-  }
-</script>

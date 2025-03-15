@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include ('partials/head'); %>
+</head>
+
+<body>
+  <%- include ('partials/header'); %>
+  <hr />
+  <div>
+    <main>
+    </main>
+  </div>
+  <%- include ('partials/footer'); %>
+</body>
+
+</html>
+
+<script>
+  async function fetchBooks() {
+    const main = document.getElementsByTagName("main")[0]
+    const response = await fetch("http://localhost:6199/fetch_books")
+    const booksGrid = await response.text()
+    main.innerHTML = booksGrid;
+  }
+  fetchBooks();
+</script>
