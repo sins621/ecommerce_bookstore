@@ -6,8 +6,8 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
-import * as databaseHandler from "./databasehandler.js";
-import { notifySubscribers } from "./mailer.js";
+import databaseService from "./services/databaseService.js";
+import mailerService from "./services/mailerService.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
@@ -25,6 +25,7 @@ app.use(morgan("tiny"));
 app.use(passport.initialize());
 app.use(passport.session());
 app.set("view engine", "ejs");
+app.set('views', './views'); //fix later
 
 const PORT = 6199;
 const SALT_ROUNDS = 10;
@@ -32,7 +33,7 @@ const SALT_ROUNDS = 10;
 //View Routes
 // Home
 app.get("/", async (req, res) => {
-  var books = await databaseHandler.fetchAllBooks();
+  var books = await databaseService.fetchAllBooks();
 
   if (books.length === 0) return res.send("Error Retrieving Books").status(500);
   return res.render("index.ejs", {
@@ -63,7 +64,7 @@ app.post("/add_book", async (req, res) => {
 
   return res.render("add_book.ejs", {
     books: BOOKS,
-    categories: await databaseHandler.fetchCategories(),
+    categories: await databaseService.fetchCategories(),
   });
 });
 
@@ -71,7 +72,7 @@ app.post("/submit", async (req, res) => {
   if (!req.body) return res.send("Server Error").status(500);
 
   const BOOK = JSON.parse(req.body.book);
-  const BOOK_INFO = await databaseHandler.addBook([
+  const BOOK_INFO = await databaseService.addBook([
     BOOK.title,
     BOOK.author_name[0],
     req.body.category,
@@ -81,16 +82,16 @@ app.post("/submit", async (req, res) => {
     req.body.quantity,
     req.body.price,
   ]);
-  databaseHandler.addLog({
+  databaseService.addLog({
     event: "Add",
     object: "Books",
     description: `User: ${req.user.email} Added ${BOOK_INFO.title} to The Catalog.`,
     createdBy: req.user.email,
   });
 
-  const SUBSCRIBERS = await databaseHandler.fetchSubscribers();
+  const SUBSCRIBERS = await databaseService.fetchSubscribers();
 
-  notifySubscribers(
+  mailerService.notifySubscribers(
     SUBSCRIBERS,
     `${BOOK.title} just got added to the Catalog!`,
     `${BOOK.title} by ${BOOK.author_name}.
@@ -107,11 +108,11 @@ app.get("/book/:book_id", async (req, res) => {
 
   const BOOK_ID = req.params.book_id;
   console.log(BOOK_ID);
-  var book = (await databaseHandler.fetchBooksBy("id", BOOK_ID))[0];
+  var book = (await databaseService.fetchBooksBy("id", BOOK_ID))[0];
 
   if (!book) return res.send("Error Retrieving Book").status(500);
 
-  var reviews = await databaseHandler.fetchBookReviews(book.id);
+  var reviews = await databaseService.fetchBookReviews(book.id);
 
   return res.render("book.ejs", {
     book: book,
@@ -122,10 +123,10 @@ app.get("/book/:book_id", async (req, res) => {
 
 app.post("/add_review", async (req, res) => {
   const USER_DATA = (
-    await databaseHandler.fetchUsersBy("id", req.body.user_id)
+    await databaseService.fetchUsersBy("id", req.body.user_id)
   )[0];
 
-  const REVIEW_INFO = await databaseHandler.addBookReview([
+  const REVIEW_INFO = await databaseService.addBookReview([
     req.body.review_title,
     USER_DATA.name,
     req.body.review_text,
@@ -134,13 +135,13 @@ app.post("/add_review", async (req, res) => {
     req.body.book_id,
   ]);
   console.log(REVIEW_INFO);
-  databaseHandler.addLog({
+  databaseService.addLog({
     event: "Add",
     object: "Review",
     description: `User: ${req.user.email} Added "${
       REVIEW_INFO.review_title
     }" to ${
-      (await databaseHandler.fetchBooksBy("id", REVIEW_INFO.book_id))[0].title
+      (await databaseService.fetchBooksBy("id", REVIEW_INFO.book_id))[0].title
     }`,
     createdBy:USER_DATA.email,
   });
@@ -151,7 +152,7 @@ app.post("/add_review", async (req, res) => {
 app.get("/user_panel", async (req, res) => {
   if (!req.isAuthenticated()) return res.redirect("/login");
   if (req.user.role !== "admin") return res.redirect("/login");
-  const SITE_USERS = await databaseHandler.fetchAllUsersRoles();
+  const SITE_USERS = await databaseService.fetchAllUsersRoles();
   return res.render("user_panel.ejs", { site_users: SITE_USERS });
 });
 
@@ -185,7 +186,7 @@ app.post("/register", async (req, res) => {
   const EMAIL = req.body.username;
   const PASSWORD = req.body.password;
   const NAME = req.body.name;
-  var checkResult = await databaseHandler.database.query(
+  var checkResult = await databaseService.database.query(
     `SELECT * FROM users
      WHERE email = $1`,
     [EMAIL]
@@ -194,8 +195,8 @@ app.post("/register", async (req, res) => {
   if (checkResult.rows.length > 0) return req.redirect("/login");
 
   const HASH = await bcrypt.hash(PASSWORD, SALT_ROUNDS);
-  const USER = await databaseHandler.addUser(EMAIL, HASH, NAME);
-  databaseHandler.addLog({
+  const USER = await databaseService.addUser(EMAIL, HASH, NAME);
+  databaseService.addLog({
     event: "Register",
     object: "Users",
     description: `User: ${USER.email} Registered an Account.`,
@@ -216,13 +217,13 @@ app.get("/cart", async (req, res) => {
 
 // API Routes
 app.get("/fetch_cart", async (req, res) => {
-  const CART = await databaseHandler.fetchCartItems(req.query.user_id);
+  const CART = await databaseService.fetchCartItems(req.query.user_id);
   console.log(CART);
   return res.json(CART);
 });
 
 app.post("/add_cart", async (req, res) => {
-  const BOOK_INFO = await databaseHandler.addBookToCart(
+  const BOOK_INFO = await databaseService.addBookToCart(
     req.body.book_id,
     req.body.user_id
   );
@@ -239,13 +240,13 @@ app.post("/add_cart", async (req, res) => {
 
 app.get("/fetch_cart_size", async (req, res) => {
   const USER_ID = req.query.user_id;
-  const CART = await databaseHandler.fetchCartItems(USER_ID);
+  const CART = await databaseService.fetchCartItems(USER_ID);
   return res.json({ cart_size: CART.length });
 });
 
 app.get("/fetch_books", async (req, res) => {
-  const BOOKS = await databaseHandler.fetchAllBooks();
-  const CATEGORIES = await databaseHandler.fetchCategories();
+  const BOOKS = await databaseService.fetchAllBooks();
+  const CATEGORIES = await databaseService.fetchCategories();
   return res.render("components/books_grid.ejs", {
     books: BOOKS,
     categories: CATEGORIES,
@@ -254,7 +255,7 @@ app.get("/fetch_books", async (req, res) => {
 
 app.get("/fetch_book_card", async (req, res) => {
   const BOOK_ID = req.query.book_id;
-  const BOOK = await databaseHandler.fetchBooksBy("id", BOOK_ID);
+  const BOOK = await databaseService.fetchBooksBy("id", BOOK_ID);
   return res.render("components/book_card.ejs", {
     book: BOOK[0],
     user: req.user,
@@ -262,11 +263,11 @@ app.get("/fetch_book_card", async (req, res) => {
 });
 
 app.post("/update_role", async (req, res) => {
-  await databaseHandler.updateRole(req.body.role, req.body.email);
+  await databaseService.updateRole(req.body.role, req.body.email);
 });
 
 app.delete("/delete_user", async (req, res) => {
-  await databaseHandler.deleteUser(req.body.email);
+  await databaseService.deleteUser(req.body.email);
 });
 
 app.get("/api/ai_abstract", async (req, res) => {
@@ -287,7 +288,7 @@ passport.use(
   "local",
   new Strategy(async function verify(username, password, callback) {
     // Form has to be called username even though it takes email (I think)
-    const REGISTERED_USERS = await databaseHandler.fetchUsersBy(
+    const REGISTERED_USERS = await databaseService.fetchUsersBy(
       "email",
       username
     );
@@ -300,10 +301,10 @@ passport.use(
 
     if (!VALID) return callback(null, false);
 
-    const USER_EMAIL_AND_ROLE = await databaseHandler.fetchUserByHighestRole(
+    const USER_EMAIL_AND_ROLE = await databaseService.fetchUserByHighestRole(
       USER.id
     );
-    databaseHandler.addLog({
+    databaseService.addLog({
       event: "Login",
       object: "Users",
       description: `User: ${USER_EMAIL_AND_ROLE.email} Logged In.`,
@@ -315,7 +316,7 @@ passport.use(
       name: USER.name,
       email: USER_EMAIL_AND_ROLE.email,
       role: USER_EMAIL_AND_ROLE.role,
-      cart: await databaseHandler.fetchCartItems(USER.id),
+      cart: await databaseService.fetchCartItems(USER.id),
     });
   })
 );
