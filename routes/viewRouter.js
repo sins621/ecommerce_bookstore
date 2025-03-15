@@ -16,6 +16,7 @@ router.post(
     failureFlash: true,
   })
 );
+router.get("/logout", viewController.logout);
 
 router.get("/register", viewController.registerForm);
 router.post("/register", viewController.register);

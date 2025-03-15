@@ -48,13 +48,15 @@ const viewController = {
   },
 
   loginForm: (req, res) => {
-    if (req.isAuthenticated) return res.redirect("/");
+    if (req.isAuthenticated()) return res.redirect("/");
     return res.render("login.ejs");
   },
+
   registerForm: (req, res) => {
-    if (req.isAuthenticated) return res.redirect("/");
+    if (req.isAuthenticated()) return res.redirect("/");
     return res.render("register.ejs");
   },
+
   register: async (req, res) => {
     if (!req.body) return res.send("Server Error").status(500);
 
@@ -80,6 +82,14 @@ const viewController = {
 
     req.login(USER, (_err) => {
       console.log("success");
+
+      return res.redirect("/");
+    });
+  },
+
+  logout: (req, res) => {
+    req.logout((err) => {
+      if (err) return next(err);
 
       return res.redirect("/");
     });
