@@ -9,7 +9,7 @@ const viewController = {
       return res.send("Error Retrieving Books").status(500);
 
     if (!req.isAuthenticated())
-      return res.render("index.ejs", {
+      return res.render("routes/index.ejs", {
         books,
         categories,
         user: req.user,
@@ -17,7 +17,7 @@ const viewController = {
 
     const cart = await databaseService.fetchCartItems(req.user.id);
 
-    return res.render("index.ejs", {
+    return res.render("routes/index.ejs", {
       books,
       categories,
       user: req.user,
@@ -34,13 +34,13 @@ const viewController = {
     const book = books[0];
 
     if (!req.isAuthenticated())
-      return res.render("book_solo.ejs", {
+      return res.render("routes/book_solo.ejs", {
         book,
       });
 
     const cart = await databaseService.fetchCartItems(req.user.id);
 
-    return res.render("book_solo.ejs", {
+    return res.render("routes/book_solo.ejs", {
       book,
       user: req.user,
       cart,
@@ -49,17 +49,17 @@ const viewController = {
 
   addBook: (req, res) => {
     // if (!req.isAuthenticated() || req.user.role != "admin") return res.redirect("/login");
-    return res.render("add_book.ejs");
+    return res.render("routes/add_book.ejs");
   },
 
   loginForm: (req, res) => {
     if (req.isAuthenticated()) return res.redirect("/");
-    return res.render("login.ejs");
+    return res.render("routes/login.ejs");
   },
 
   registerForm: (req, res) => {
     if (req.isAuthenticated()) return res.redirect("/");
-    return res.render("register.ejs");
+    return res.render("routes/register.ejs");
   },
 
   register: async (req, res) => {

@@ -9,15 +9,15 @@ const bookController = {
     return res.json(books);
   },
   fetchBookAbstract: async (req, res) => {
-    const author = req.body.author;
-    const title = req.body.title;
+    const author = req.query.author;
+    const title = req.query.title;
     const bookAbstract = await geminiService.fetchBookAbstract(author, title);
     return res.json(bookAbstract);
   },
 
   fetchBookDetails: async (req, res) => {
-    const author = req.body.author;
-    const title = req.body.title;
+    const author = req.query.author;
+    const title = req.query.title;
     const bookDetails = await openLibraryService.fetchBookDetails(author, title)
     return res.json(bookDetails);
   },

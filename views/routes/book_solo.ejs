@@ -2,28 +2,28 @@
 <html lang="en">
 
 <head>
-  <%- include('partials/head') %>
+  <%- include('../partials/head') %>
 
 </head>
 
 <body>
   <% if (locals.user) { %>
-  <%- include('partials/header', {user, cart}) %>
+  <%- include('../partials/header', {user, cart}) %>
   <main>
-    <%- include('components/book_solo_card', {user, cart}) %>
+    <%- include('../components/book_solo_card', {user, cart}) %>
     <button onclick="show_form()">Leave a Review</button>
   </main>
   <% } else { %>
-  <%- include('partials/header') %>
+  <%- include('../partials/header') %>
   <main>
-    <%- include('components/book_solo_card') %>
+    <%- include('../components/book_solo_card') %>
     <button onclick="location.href='/login'" type="button">
       Login to Leave a Review
     </button>
   </main>
   <% } %>
   <hr>
-  <%- include('partials/footer') %>
+  <%- include('../partials/footer') %>
 </body>
 
 </html>
