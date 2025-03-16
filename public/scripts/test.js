@@ -43,16 +43,16 @@ console.log("Test");
 let form = document.createElement("form");
 let divForForm = document.getElementById("test-div");
 divForForm.appendChild(form);
-addBookSelect(form, bookData);
+createBookSelect(form, bookData);
 
-function addBookSelect(element, bookData) {
+function createBookSelect(element, bookData) {
   let bookSelect = document.createElement("select");
   bookSelect.name = "book";
-  addBookOptions(bookSelect, bookData)
+  addBookOption(bookSelect, bookData)
   element.appendChild(bookSelect);
 }
 
-function addBookOptions(element, bookData) {
+function addBookOption(element, bookData) {
   bookData.docs.forEach((book) => {
     let bookOption = document.createElement("option");
     bookOption.value = JSON.stringify(book);

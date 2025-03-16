@@ -12,7 +12,7 @@ const bookController = {
     const author = req.query.author;
     const title = req.query.title;
     const bookAbstract = await geminiService.fetchBookAbstract(author, title);
-    return res.json(bookAbstract);
+    return res.json({abstract: bookAbstract});
   },
 
   fetchBookDetails: async (req, res) => {
