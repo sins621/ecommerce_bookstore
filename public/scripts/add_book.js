@@ -1,44 +1,3 @@
-console.log("Hello World");
-const bookData = {
-  numFound: 4,
-  start: 0,
-  numFoundExact: true,
-  num_found: 4,
-  documentation_url: "https://openlibrary.org/dev/docs/api/search",
-  q: "",
-  offset: null,
-  docs: [
-    {
-      author_name: ["J. K. Rowling", "Jim Kay"],
-      cover_i: 12059372,
-      publish_year: [
-        1993, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-        2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021,
-        2023, 2024,
-      ],
-      title: "Harry Potter and the Goblet of Fire",
-    },
-    {
-      author_name: ["SparkNotes Staff", "J. K. Rowling", "SparkNotes"],
-      publish_year: [2014, 2007],
-      title:
-        "Harry Potter and the Goblet of Fire (SparkNotes Literature Guide)",
-    },
-    {
-      author_name: ["J. K. Rowling"],
-      publish_year: [2019],
-      title: "Harry Potter and the Goblet of Fire (illustrated E",
-    },
-    {
-      author_name: ["J. K. Rowling"],
-      cover_i: 13290169,
-      publish_year: [2021],
-      title:
-        "Harry Potter and the Half-Blood Prince / The Order Of The Pheonix / Chamber of Secrets / The Philosopher's Stone / The Goblet Of Fire /The Prisoner of Azkaban",
-    },
-  ],
-};
-
 document
   .getElementsByClassName("search-book-form")[0]
   .addEventListener("submit", async (event) => createBookForm(event));
@@ -65,6 +24,7 @@ async function createBookForm(event) {
   }
 
   const bookSelect = createBookSelect(bookData);
+  const selectedBookData = JSON.parse(bookSelect.value);
   form.appendChild(bookSelect);
 
   const abstractTextArea = createAbstractTextArea(bookData);
@@ -78,10 +38,50 @@ async function createBookForm(event) {
   form.appendChild(generateAbstractButton);
 
   generateAbstractButton.addEventListener("click", async () => {
-    const selectedBookData = JSON.parse(bookSelect.value);
     const author = selectedBookData.author_name[0];
     const title = selectedBookData.title;
     abstractTextArea.textContent = await generateAbstract(author, title);
+  });
+
+  const quantityInput = document.createElement("input");
+  quantityInput.name = "quantity";
+  quantityInput.placeholder = "Quantity";
+  quantityInput.type = "text";
+  form.appendChild(quantityInput);
+
+  const priceInput = document.createElement("input");
+  priceInput.name = "price";
+  priceInput.placeholder = "Price";
+  priceInput.type = "text";
+  form.appendChild(priceInput);
+
+  const categories = await fetchCategories();
+  const categorySelect = createCategorySelect(categories);
+  form.appendChild(categorySelect);
+
+  const submitBookButton = document.createElement("button");
+  submitBookButton.type = "button";
+  submitBookButton.appendChild(document.createTextNode("Submit"));
+  form.appendChild(submitBookButton);
+
+  submitBookButton.addEventListener("click", async () => {
+    await fetch("/books/add", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: selectedBookData.title,
+        author: selectedBookData.author_name[0],
+        category: categorySelect.value,
+        publish_year: selectedBookData.publish_year[0],
+        abstract: abstractTextArea.value,
+        cover_id: selectedBookData.cover_i,
+        quantity: quantityInput.value,
+        price: priceInput.value,
+      }),
+    });
   });
 }
 
@@ -124,4 +124,25 @@ async function generateAbstract(author, title) {
     `/books/abstract?author=${author}&title=${title}`
   );
   return (await response.json()).abstract;
+}
+
+async function fetchCategories() {
+  const response = await fetch("/books/categories");
+  return await response.json();
+}
+
+function createCategorySelect(categories) {
+  const categorySelect = document.createElement("select");
+  categorySelect.name = "category";
+  categories.forEach((category) => {
+    addCategoryOption(categorySelect, category);
+  });
+  return categorySelect;
+}
+
+function addCategoryOption(element, category) {
+  const categoryOption = document.createElement("option");
+  categoryOption.value = category;
+  categoryOption.appendChild(document.createTextNode(category));
+  element.appendChild(categoryOption);
 }

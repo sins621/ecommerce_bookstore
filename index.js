@@ -5,6 +5,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import bcrypt from "bcrypt";
 import morgan from "morgan";
+import bodyParser from "body-parser";
 import databaseService from "./services/databaseService.js";
 import userRoutes from './routes/userRouter.js';
 import bookRoutes from './routes/bookRouter.js';
@@ -23,8 +24,12 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 app.use(morgan("tiny"));
 
 app.use(

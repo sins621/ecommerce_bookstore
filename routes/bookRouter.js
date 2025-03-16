@@ -6,5 +6,9 @@ const router = express.Router();
 router.get("/", bookController.allBooks);
 router.get("/abstract", bookController.fetchBookAbstract);
 router.get("/details", bookController.fetchBookDetails);
+router.get("/categories", bookController.fetchCategories);
+
+router.post("/add", bookController.addBook);
+
 
 export default router;
