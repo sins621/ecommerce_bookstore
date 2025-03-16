@@ -41,45 +41,49 @@ const bookData = {
 
 document
   .getElementsByClassName("search-book-form")[0]
-  .addEventListener("submit", async (event) => {
-    event.preventDefault();
+  .addEventListener("submit", async (event) => createBookForm(event));
 
-    const formData = new FormData(event.target);
-    const author = formData.get("author");
-    const title = formData.get("title");
-    const response = await fetch(
-      `/books/details?author=${author}&title=${title}`
-    );
-    const bookData = await response.json();
+async function createBookForm(event) {
+  event.preventDefault();
 
-    const divForForm = document.getElementsByClassName("book-selector")[0];
-    let form = divForForm.querySelector("form");
+  const formData = new FormData(event.target);
+  const author = formData.get("author");
+  const title = formData.get("title");
+  const response = await fetch(
+    `/books/details?author=${author}&title=${title}`
+  );
+  const bookData = await response.json();
 
-    if (!form) {
-      form = document.createElement("form");
-      divForForm.appendChild(form);
-    } else {
-      form.innerHTML = "";
-    }
+  const divForForm = document.getElementsByClassName("book-selector")[0];
+  let form = divForForm.querySelector("form");
 
-    const bookSelect = createBookSelect(bookData);
-    form.appendChild(bookSelect);
+  if (!form) {
+    form = document.createElement("form");
+    divForForm.appendChild(form);
+  } else {
+    form.innerHTML = "";
+  }
 
-    const abstractTextArea = createAbstractTextArea(bookData);
-    form.appendChild(abstractTextArea);
+  const bookSelect = createBookSelect(bookData);
+  form.appendChild(bookSelect);
 
-    const generateAbstractButton = document.createElement("button");
-    generateAbstractButton.type = "button";
-    generateAbstractButton.appendChild(document.createTextNode("Generate Abstract"));
-    form.appendChild(generateAbstractButton);
+  const abstractTextArea = createAbstractTextArea(bookData);
+  form.appendChild(abstractTextArea);
 
-    generateAbstractButton.addEventListener("click", async () => {
-      const selectedBookData = JSON.parse(bookSelect.value)
-      const author = selectedBookData.author_name[0];
-      const title = selectedBookData.title;
-      abstractTextArea.textContent = await generateAbstract(author, title);
-    });
+  const generateAbstractButton = document.createElement("button");
+  generateAbstractButton.type = "button";
+  generateAbstractButton.appendChild(
+    document.createTextNode("Generate Abstract")
+  );
+  form.appendChild(generateAbstractButton);
+
+  generateAbstractButton.addEventListener("click", async () => {
+    const selectedBookData = JSON.parse(bookSelect.value);
+    const author = selectedBookData.author_name[0];
+    const title = selectedBookData.title;
+    abstractTextArea.textContent = await generateAbstract(author, title);
   });
+}
 
 function createBookSelect(bookData) {
   const bookSelect = document.createElement("select");
