@@ -12,15 +12,15 @@
   <%- include('../partials/header') %>
   <% } %>
   <main>
-    <form class="search-book-form">
-      <input type="text" name="author" placeholder="Author" /><br />
-      <input type="text" name="title" placeholder="Title" /><br />
-      <input type="submit" value="Search" />
-    </form>
-    <form class="add-book-form">
-      <h1>Books found</h1>
-      <div class="add-book-select-options">
-      </div>
+    <div>
+      <form class="search-book-form">
+        <input type="text" name="author" placeholder="Author" /><br />
+        <input type="text" name="title" placeholder="Title" /><br />
+        <input type="submit" value="Search" />
+      </form>
+    </div>
+    <div class="book-selector">
+    </div>
     </form>
   </main>
   <%- include('../partials/footer') %>

@@ -10,35 +10,33 @@ document
     const response = await fetch(
       `/books/details?author=${author}&title=${title}`
     );
-    let addBookSelectOptions = document.getElementsByClassName(
-      "add-book-select-options"
-    )[0];
-    updateOptions(addBookSelectOptions, await response.json());
+    let form = document.createElement("form");
+    let divForForm = document.getElementsByClassName("book-selector")[0];
+    divForForm.appendChild(form);
+    addBookSelect(form, await response.json());
   });
 
-function updateOptions(form, bookData) {
-  form.innerHTML = `
-  <select name="book">
-    <option selected>Select the Correct Book</option>
-    ${createSelectOptions(bookData)}
-  </select>
-  `;
+function addBookSelect(element, bookData) {
+  let bookSelect = document.createElement("select");
+  bookSelect.name = "book";
+  addBookOptions(bookSelect, bookData);
+  element.appendChild(bookSelect);
 }
 
-function createSelectOptions(bookData) {
-  let newHtml = ``;
+function addBookOptions(element, bookData) {
   bookData.docs.forEach((book) => {
-    let newOption = ``;
-    newOption += `<option value="${JSON.stringify(book)}">\n`;
-    newOption += `${book.title} ${
-      book.publish_year &&
-      Array.isArray(book.publish_year) &&
-      book.publish_year.length > 0
-        ? book.publish_year[0]
-        : "N/A"
-    }\n`;
-    newOption += `</option>`;
-    newHtml += newOption + `\n`;
+    let bookOption = document.createElement("option");
+    bookOption.value = JSON.stringify(book);
+    let bookText = document.createTextNode(
+      `${book.title} ${
+        book.publish_year &&
+        Array.isArray(book.publish_year) &&
+        book.publish_year.length > 0
+          ? book.publish_year[0]
+          : "N/A"
+      }`
+    );
+    bookOption.appendChild(bookText);
+    element.appendChild(bookOption);
   });
-  return newHtml;
 }

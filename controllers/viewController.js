@@ -99,6 +99,10 @@ const viewController = {
       return res.redirect("/");
     });
   },
+
+  test: (req, res) => {
+    res.render("routes/test.ejs");
+  }
 };
 
 export default viewController;

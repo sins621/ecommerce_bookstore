@@ -6,6 +6,7 @@ import passport from "passport";
 const router = express.Router();
 
 router.get("/", viewController.home);
+router.get("/test", viewController.test);
 router.get("/book/:id", viewController.book);
 router.get("/add-book", viewController.addBook);
 router.get("/login", viewController.loginForm);
