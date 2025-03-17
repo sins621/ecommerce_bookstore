@@ -1,4 +1,7 @@
 import databaseService from "../services/databaseService.js";
+import bcrypt from "bcrypt";
+
+const SALT_ROUNDS = 10;
 
 const viewController = {
   home: async (req, res) => {
@@ -65,27 +68,23 @@ const viewController = {
   register: async (req, res) => {
     if (!req.body) return res.send("Server Error").status(500);
 
-    const EMAIL = req.body.username;
-    const PASSWORD = req.body.password;
-    const NAME = req.body.name;
-    var checkResult = await databaseService.database.query(
-      `SELECT * FROM users
-     WHERE email = $1`,
-      [EMAIL]
-    );
+    const email = req.body.username;
+    const password = req.body.password;
+    const name = req.body.name;
+    var checkResult = await databaseService.fetchUsersBy("email", email);
 
-    if (checkResult.rows.length > 0) return req.redirect("/login");
+    if (checkResult.length > 0) return res.redirect("/login");
 
-    const HASH = await bcrypt.hash(PASSWORD, SALT_ROUNDS);
-    const USER = await databaseService.addUser(EMAIL, HASH, NAME);
-    databaseService.addLog({
-      event: "Register",
-      object: "Users",
-      description: `User: ${USER.email} Registered an Account.`,
-      createdBy: USER.email,
-    });
+    const hash = await bcrypt.hash(password, SALT_ROUNDS);
+    const user = await databaseService.addUser(email, hash, name);
+    // databaseService.addLog({
+    //   event: "Register",
+    //   object: "Users",
+    //   description: `User: ${USER.email} Registered an Account.`,
+    //   createdBy: USER.email,
+    // });
 
-    req.login(USER, (_err) => {
+    req.login(user, (_err) => {
       console.log("success");
 
       return res.redirect("/");
@@ -102,7 +101,7 @@ const viewController = {
 
   test: (req, res) => {
     res.render("routes/test.ejs");
-  }
+  },
 };
 
 export default viewController;

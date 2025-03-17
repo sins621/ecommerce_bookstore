@@ -15,7 +15,9 @@
   <div class="price-focus">
     <p><strong>R<%= book.price %></strong></p>
     <% if (locals.user) { %>
-    <button onclick="">Add to
+    <button class="book-solo-add-cart"
+        onclick="addBookToCart('<%= book.id %>')">Add
+      to
       Cart</button>
     <% } else { %>
     <a href="/login" class="button">Add to Cart</a>

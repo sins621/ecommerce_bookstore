@@ -6,10 +6,10 @@ import { Strategy } from "passport-local";
 import bcrypt from "bcrypt";
 import morgan from "morgan";
 import databaseService from "./services/databaseService.js";
-import userRoutes from './routes/userRouter.js';
-import bookRoutes from './routes/bookRouter.js';
-import viewRoutes from './routes/viewRouter.js';
-import { fileURLToPath } from 'url';
+import userRoutes from "./routes/userRouter.js";
+import bookRoutes from "./routes/bookRouter.js";
+import viewRoutes from "./routes/viewRouter.js";
+import { fileURLToPath } from "url";
 import "dotenv/config";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -68,10 +68,8 @@ passport.use(
 
     return callback(null, {
       id: USER.id,
-      name: USER.name,
       email: USER_EMAIL_AND_ROLE.email,
       role: USER_EMAIL_AND_ROLE.role,
-      cart: await databaseService.fetchCartItems(USER.id),
     });
   })
 );
@@ -83,10 +81,10 @@ passport.deserializeUser((user, callback) => {
   callback(null, user);
 });
 
-app.use('/users', userRoutes);
-app.use('/books', bookRoutes);
-app.use('/', viewRoutes);
+app.use("/users", userRoutes);
+app.use("/books", bookRoutes);
+app.use("/", viewRoutes);
 
 app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+  console.log(`Server listening at http://localhost:${port}`);
 });

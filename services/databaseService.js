@@ -103,19 +103,9 @@ const databaseService = {
       )
     ).rows;
   },
-  fetchCartItems: async (userId) => {
-    return (
-      await database.query(
-        `
-          SELECT * FROM carts
-          WHERE user_id = $1
-          `,
-        [userId]
-      )
-    ).rows;
-  },
+  
   addBookToCart: async (bookId, userId) => {
-    const BOOK_INFO = (await fetchBooksBy("id", bookId))[0];
+    const BOOK_INFO = (await databaseService.fetchBooksBy("id", bookId))[0];
 
     return (
       await database.query(
@@ -244,7 +234,6 @@ const databaseService = {
       id: userTableUser.id,
       email: roleTableUser.email,
       role: roleTableUser.role,
-      cart: await fetchCartItems(roleTableUser.id),
     };
   },
 
