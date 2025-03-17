@@ -11,21 +11,36 @@
   <%- include('../partials/header', {user, cart}) %>
   <main>
     <%- include('../components/book_solo_card', {user, cart}) %>
+    <hr />
     <button onclick="show_form()">Leave a Review</button>
+    <div id="review-form" style="display: none;">
+      <input type="text" name="title" placeholder="Title" /><br />
+      <input type="text" name="review" placeholder="Review" /><br />
+      <input type="text" name="rating" placeholder="Rating Out of 5" /><br />
+      <button onclick="postReview('<%= book.id %>')">Post</button>
+    </div>
+    <div class="book-solo-reviews">
+      <%- include('../components/reviews', {reviews: locals.reviews}) %>
+    </div>
   </main>
   <% } else { %>
   <%- include('../partials/header') %>
   <main>
     <%- include('../components/book_solo_card') %>
+    <hr />
     <button onclick="location.href='/login'" type="button">
       Login to Leave a Review
     </button>
+    <div class="book-solo-reviews">
+      <%- include('../components/reviews', {reviews: locals.reviews}) %>
+    </div>
   </main>
   <% } %>
   <hr>
   <%- include('../partials/footer') %>
 </body>
 <script src="../scripts/scripts.js"></script>
+<script src="../scripts/book_solo.js"></script>
 
 
 </html>

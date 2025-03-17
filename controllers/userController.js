@@ -24,10 +24,30 @@ const userController = {
     }
   },
 
+  fetchReviews: async (req, res) => {
+    const reviews = await databaseService.fetchBookReviews(req.params.id);
+    console.log(reviews);
+    return res.json({reviews}).status(200)
+  },
+
   addBooktoCart: async (req, res) => {
     // TODO: Add Check for User Logged In
     const bookId = req.body.book_id;
     await databaseService.addBookToCart(bookId, req.user.id);
+    await res.send("OK").status(200);
+  },
+
+  addBookReview: async (req, res) => {
+    const user = await databaseService.fetchUsersBy("id", req.user.id);
+    const userName = user[0].name;
+    await databaseService.addBookReview([
+      req.body.review_title,
+      userName,
+      req.body.review_text,
+      req.user.id,
+      req.body.rating,
+      req.body.book_id,
+    ]);
     await res.send("OK").status(200);
   },
 };

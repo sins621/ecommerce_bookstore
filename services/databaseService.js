@@ -61,14 +61,14 @@ const databaseService = {
       )
     ).rows[0];
   },
-  fetchBookReviews: async (id) => {
+  fetchBookReviews: async (bookId) => {
     return (
       await database.query(
         `
           SELECT * FROM book_reviews
           WHERE book_id = $1
           `,
-        [id]
+        [bookId]
       )
     ).rows;
   },

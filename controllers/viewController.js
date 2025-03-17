@@ -31,6 +31,7 @@ const viewController = {
   book: async (req, res) => {
     const bookId = req.params.id;
     const books = await databaseService.fetchBooksBy("id", bookId);
+    const reviews = await databaseService.fetchBookReviews(bookId);
 
     if (books.length === 0)
       return res.send("Error Retrieving Book").status(500);
@@ -39,12 +40,14 @@ const viewController = {
     if (!req.isAuthenticated())
       return res.render("routes/book_solo.ejs", {
         book,
+        reviews,
       });
 
     const cart = await databaseService.fetchCartItems(req.user.id);
 
     return res.render("routes/book_solo.ejs", {
       book,
+      reviews,
       user: req.user,
       cart,
     });
@@ -77,12 +80,12 @@ const viewController = {
 
     const hash = await bcrypt.hash(password, SALT_ROUNDS);
     const user = await databaseService.addUser(email, hash, name);
-    // databaseService.addLog({
-    //   event: "Register",
-    //   object: "Users",
-    //   description: `User: ${USER.email} Registered an Account.`,
-    //   createdBy: USER.email,
-    // });
+    databaseService.addLog({
+      event: "Register",
+      object: "Users",
+      description: `User: ${user.email} Registered an Account.`,
+      createdBy: user.email,
+    });
 
     req.login(user, (_err) => {
       console.log("success");

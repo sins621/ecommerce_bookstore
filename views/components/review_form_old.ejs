@@ -16,10 +16,7 @@
   <input type="text" name="title" placeholder="Title" /><br />
   <input type="text" name="review" placeholder="Review" /><br />
   <input type="text" name="rating" placeholder="Rating Out of 5" /><br />
-  <button onclick="postReview(<%= user.id %>)">Post</button>
-  <input type="hidden" name="user_id" value="<%= user.id %>">
-  <input type="hidden" name="book_id" value="<%= book.id %>">
-  <input type="hidden" name="user_name" value="<%= user.name %>">
+  <button onclick="postReview('<%= book.id %>')">Post</button>
 </div>
 <% } %>
 <script>

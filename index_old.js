@@ -25,7 +25,7 @@ app.use(morgan("tiny"));
 app.use(passport.initialize());
 app.use(passport.session());
 app.set("view engine", "ejs");
-app.set('views', './views'); //fix later
+app.set("views", "./views"); //fix later
 
 const PORT = 6199;
 const SALT_ROUNDS = 10;
@@ -143,10 +143,10 @@ app.post("/add_review", async (req, res) => {
     }" to ${
       (await databaseService.fetchBooksBy("id", REVIEW_INFO.book_id))[0].title
     }`,
-    createdBy:USER_DATA.email,
+    createdBy: USER_DATA.email,
   });
 
-  res.json({OK: "Review Added Successfully"}).status(200);
+  res.json({ OK: "Review Added Successfully" }).status(200);
 });
 
 app.get("/user_panel", async (req, res) => {
