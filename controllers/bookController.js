@@ -9,6 +9,13 @@ const bookController = {
     return res.json(books);
   },
 
+  fetchBookBy: async (req, res) => {
+    const filter = req.query.filter;
+    const value = req.query.value;
+    const filteredBooks = await databaseService.fetchBooksBy(filter, value);
+    return res.json(filteredBooks);
+  },
+
   fetchBookAbstract: async (req, res) => {
     const author = req.query.author;
     const title = req.query.title;

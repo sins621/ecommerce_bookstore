@@ -103,7 +103,7 @@ const databaseService = {
       )
     ).rows;
   },
-  
+
   addBookToCart: async (bookId, userId) => {
     const BOOK_INFO = (await databaseService.fetchBooksBy("id", bookId))[0];
 

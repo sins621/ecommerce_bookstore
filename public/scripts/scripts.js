@@ -5,7 +5,6 @@ async function updateCartCounter() {
 }
 
 async function fetchCartItems() {
-    response = await fetch("/users/cart");
-    return await response.json();
-  }
-  
+  response = await fetch("/users/cart");
+  return await response.json();
+}
