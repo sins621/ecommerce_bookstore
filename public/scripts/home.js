@@ -1,7 +1,6 @@
 async function updateBookCollection(category) {
   const bookCollection = document.getElementsByClassName("book-collection")[0];
   bookCollection.className = "book-collection";
-  bookCollection.innerHTML = "";
 
   let books = null;
   if (category) {
@@ -12,10 +11,12 @@ async function updateBookCollection(category) {
 
   const categories = await fetchBookCategories();
 
+  bookCollection.innerHTML = "";
+
   categories.forEach((category) => {
     if (books.some((book) => book.category === category)) {
       const bookCollectionCategory = document.createElement("h2");
-      bookCollectionCategory.className = "book-collection-category";    
+      bookCollectionCategory.className = "book-collection-category";
       bookCollection.appendChild(bookCollectionCategory);
 
       const bookCollectionCategoryLink = document.createElement("a");
@@ -61,6 +62,7 @@ function createBookItem(element, book) {
   element.appendChild(bookCollectionItem);
 
   const bookImageLink = document.createElement("a");
+  bookImageLink.href = `/book/${book.id}`;
   const bookImage = document.createElement("img");
   bookImage.src = `https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`;
   bookImageLink.appendChild(bookImage);
@@ -71,6 +73,7 @@ function createBookItem(element, book) {
   bookCollectionItem.appendChild(bookContent);
 
   const bookTitleLink = document.createElement("a");
+  bookTitleLink.href = `/book/${book.id}`;
   const bookTitle = document.createElement("h3");
   bookTitle.appendChild(document.createTextNode(book.title));
   bookTitleLink.appendChild(bookTitle);
@@ -83,6 +86,6 @@ function createBookItem(element, book) {
   bookContent.appendChild(bookAuthorAndYear);
 
   const bookPrice = document.createElement("p");
-  bookPrice.appendChild(document.createTextNode(book.price));
+  bookPrice.appendChild(document.createTextNode("R" + book.price));
   bookContent.appendChild(bookPrice);
 }

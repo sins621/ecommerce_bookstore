@@ -1,0 +1,11 @@
+<div class="categories">
+  <% if (locals.categories) { %>
+  <% categories.forEach((category)=> { %>
+  <% if (books.some(book=> book.category === category)) { %>
+  <button onclick="updateBookCollection('<%= category %>')">
+    <%= category %>
+  </button>
+  <% } %>
+  <% }); %>
+  <% } %>
+</div>

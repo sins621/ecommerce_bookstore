@@ -61,7 +61,6 @@ async function fetchReviews(bookId) {
 }
 
 function createReview(element, review) {
-  console.log(review);
   const reviewTitle = document.createElement("h3");
   reviewTitle.appendChild(document.createTextNode(review.review_title));
   element.appendChild(reviewTitle);

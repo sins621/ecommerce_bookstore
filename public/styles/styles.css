@@ -29,6 +29,20 @@ body {
   width: 30%;
 }
 
+.categories {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.categories a {
+  margin: 0px 5px;
+}
+
+.book-collection {
+  min-height: 240px;
+}
+
 .book-collection-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -49,7 +63,7 @@ body {
   body {
     max-width: auto;
   }
-  
+
   .book-collection-grid {
     grid-template-columns: repeat(3, 1fr);
   }
