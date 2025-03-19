@@ -27,7 +27,7 @@ const userController = {
   fetchReviews: async (req, res) => {
     const reviews = await databaseService.fetchBookReviews(req.params.id);
     console.log(reviews);
-    return res.json({reviews}).status(200)
+    return res.json({ reviews }).status(200);
   },
 
   addBooktoCart: async (req, res) => {
@@ -49,6 +49,15 @@ const userController = {
       req.body.book_id,
     ]);
     await res.send("OK").status(200);
+  },
+
+  addSubscriber: async (req, res) => {
+    const email = req.body.email;
+    const response = await databaseService.addSubscriber(email);
+    if (!response)
+      return res.json({ error: "Email is already subscribed" }).status(409);
+
+    return res.json({ message: "Email added successfully." }).status(201);
   },
 };
 

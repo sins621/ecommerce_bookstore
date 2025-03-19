@@ -261,6 +261,29 @@ const databaseService = {
     );
   },
 
+  addSubscriber: async (email) => {
+    try {
+      return (
+        await database.query(
+          `
+        INSERT INTO public.subscribers
+        (
+          email
+        )
+        VALUES
+        ($1)
+        RETURNING id
+        `,
+          [email]
+        )
+      ).rows[0].id;
+    } catch (err) {
+      if (err.code !== "23505") throw new Error(err);
+
+      return 0;
+    }
+  },
+
   fetchSubscribers: async () => {
     return (
       await database.query(
