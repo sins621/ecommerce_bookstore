@@ -53,6 +53,14 @@ const viewController = {
     });
   },
 
+  cart: async (req, res) => {
+    const cart = await databaseService.fetchCartItems(req.user.id);
+    return res.render("routes/cart.ejs", {
+      cart,
+      user: req.user.id,
+    })
+  },
+
   addBook: (req, res) => {
     // if (!req.isAuthenticated() || req.user.role != "admin") return res.redirect("/login");
     return res.render("routes/add_book.ejs");

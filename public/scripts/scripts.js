@@ -17,8 +17,16 @@ async function subscribe(event) {
   event.preventDefault();
   const formData = new FormData(event.target);
   const email = formData.get("email");
+  addSubscriber(email);
 }
 
 async function addSubscriber(email) {
-  await fetch("");
+  await fetch("/users/add-subscriber", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
 }

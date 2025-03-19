@@ -1,0 +1,73 @@
+<% if (locals.cart.length > 0) { %>
+<table class="cart-table">
+  <tr>
+    <th>Book</th>
+    <th>Price</th>
+    <th>Quantity</th>
+  </tr>
+  <% cart.forEach((book) => { %>
+  <tr>
+    <td><a href="/book/<%= book.book_id %>"><%= book.book_title %></a></td>
+    <td>R<%= book.book_price %></td>
+    <td><%= book.amount %></td>
+    <td><button onclick="removeBook('<%= book.book_id %>')">Remove</button>
+    </td>
+    <% }); %>
+  </tr>
+</table>
+<h3>Cart Summary</h3>
+<h4>Total</h4>
+<p>
+  <% let total = 0 %>
+  <% cart.forEach((book) => { %>
+  <% total += book.book_price * book.amount %>
+  <% }); %>
+  R<%= total.toFixed(2) %>
+</p>
+<% } else { %>
+<p>No Items in Cart</p>
+<% } %>
+
+<script>
+  async function removeBook(bookId) {
+    updateCartItems();
+  }
+
+  async function updateCartItems() {
+    const cart = await fetchCartItems();
+
+    if (!cart) return;
+
+    const cartTable = document.getElementsByClassName("cart-table")[0];
+    cartTable.innerHTML = "";
+
+    const headerRow = document.createElement('tr');
+    cartTable.append(headerRow);
+
+    const bookHeader = document.createElement('th');
+    bookHeader.appendChild(document.createTextNode('Book'));
+    headerRow.appendChild(bookHeader);
+
+    const priceHeader = document.createElement('th');
+    bookHeader.appendChild(document.createTextNode('Price'))
+    headerRow.appendChild(bookHeader)
+
+    const quantityHeader = document.createElement('th');
+    bookHeader.appendChild(document.createTextNode('Quantity'));
+    headerRow.appendChild(bookHeader);
+
+    cart.cart.forEach(book => {
+      const cartItemRow = document.createElement('tr');
+      cartTable.append(cartItemRow);
+
+      const bookTitle = document.createElement('td');
+      const bookTitleLink = document.createElement('a');
+      bookTitleLink.href = `/book/${book.book_id}`;
+      bookTitleLink.appendChild(document.createTextNode(book.book_title));
+      bookTitle.appendChild(bookTitleLink);
+      cartItemRow.append(bookTitle);
+
+    });
+
+  }
+</script>
