@@ -29,11 +29,13 @@ async function updateBookCollection(category) {
       const bookCollectinGrid = document.createElement("div");
       bookCollectinGrid.className = "book-collection-grid";
       bookCollection.appendChild(bookCollectinGrid);
+      
+      const filteredBooks = books.filter((book) => {
+        return book.category === category;
+      })
 
-      books.forEach((book) => {
-        if (book.category === category) {
+      filteredBooks.forEach((book) => {
           createBookItem(bookCollectinGrid, book);
-        }
       });
     }
   });
