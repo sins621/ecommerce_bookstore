@@ -16,6 +16,7 @@ const databaseService = {
   fetchAllBooks: async () => {
     return (await database.query("SELECT * FROM books")).rows;
   },
+
   fetchBooksBy: async (filter, value) => {
     switch (filter) {
       case "category":
@@ -40,6 +41,147 @@ const databaseService = {
         ).rows;
     }
   },
+
+  fetchBookReviews: async (bookId) => {
+    return (
+      await database.query(
+        `
+        SELECT * FROM book_reviews
+        WHERE book_id = $1
+        `,
+        [bookId]
+      )
+    ).rows;
+  },
+
+  fetchCartItems: async (userId) => {
+    return (
+      await database.query(
+        `
+        SELECT * FROM carts
+        WHERE user_id = $1
+        `,
+        [userId]
+      )
+    ).rows;
+  },
+
+  fetchUsersBy: async (filter, value) => {
+    switch (filter) {
+      case "email":
+        return (
+          await database.query(
+            `
+            SELECT * FROM users 
+            WHERE email = $1
+            `,
+            [value]
+          )
+        ).rows;
+      case "id":
+        return (
+          await database.query(
+            `
+            SELECT * FROM users 
+            WHERE id = $1
+            `,
+            [value]
+          )
+        ).rows;
+    }
+  },
+
+  fetchAllUsersRoles: async () => {
+    return (
+      await database.query(
+        `
+        SELECT email, role,
+        CASE
+          WHEN role = 'admin' THEN 'admin'
+          WHEN role = 'user' THEN 'user'
+          ELSE 'other'
+          END AS role
+        FROM user_roles
+        ORDER BY CASE
+          WHEN role = 'admin' THEN 1
+          WHEN role = 'user' THEN 2
+          ELSE 3
+          END;
+        `
+      )
+    ).rows;
+  },
+
+  fetchUserByHighestRole: async (id) => {
+    return (
+      await database.query(
+        `
+        SELECT email, role,
+          CASE
+            WHEN role = 'admin' THEN 'admin'
+            WHEN role = 'user' THEN 'user'
+            ELSE 'other'
+          END AS role
+        FROM user_roles
+        WHERE user_id = $1
+          ORDER BY CASE
+            WHEN role = 'admin' THEN 1
+            WHEN role = 'user' THEN 2
+            ELSE 3
+          END
+        LIMIT 1;
+        `,
+        [id]
+      )
+    ).rows[0];
+  },
+
+  fetchSubscribers: async () => {
+    return (
+      await database.query(
+        `
+        SELECT * FROM public.subscribers
+        `
+      )
+    ).rows;
+  },
+
+  fetchCategories: async () => {
+    const categoryObjects = (
+      await database.query(
+        `
+      SELECT name FROM public.categories
+      `
+      )
+    ).rows;
+    const categories = [];
+    categoryObjects.map((category) => {
+      categories.push(category.name);
+    });
+    return categories;
+  },
+
+  addBookReview: async (reviewInfo) => {
+    return (
+      await database.query(
+        `
+        INSERT INTO book_reviews (
+          review_title,
+          reviewer_name,
+          review_text,
+          user_id,
+          review_rating,
+          book_id,
+          review_date
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, now())
+        RETURNING *
+        `,
+        reviewInfo
+      )
+    ).rows[0];
+  },
+
   addBook: async (bookInfo) => {
     return (
       await database.query(
@@ -61,47 +203,28 @@ const databaseService = {
       )
     ).rows[0];
   },
-  fetchBookReviews: async (bookId) => {
-    return (
-      await database.query(
-        `
-          SELECT * FROM book_reviews
-          WHERE book_id = $1
+
+  addSubscriber: async (email) => {
+    try {
+      return (
+        await database.query(
+          `
+          INSERT INTO public.subscribers
+          (
+            email
+          )
+          VALUES
+          ($1)
+          RETURNING id
           `,
-        [bookId]
-      )
-    ).rows;
-  },
-  addBookReview: async (reviewInfo) => {
-    return (
-      await database.query(
-        `
-        INSERT INTO book_reviews (
-          review_title,
-          reviewer_name,
-          review_text,
-          user_id,
-          review_rating,
-          book_id,
-          review_date
+          [email]
         )
-        VALUES ($1, $2, $3, $4, $5, $6, now())
-        RETURNING *
-         `,
-        reviewInfo
-      )
-    ).rows[0];
-  },
-  fetchCartItems: async (userId) => {
-    return (
-      await database.query(
-        `
-          SELECT * FROM carts
-          WHERE user_id = $1
-          `,
-        [userId]
-      )
-    ).rows;
+      ).rows[0].id;
+    } catch (err) {
+      if (err.code !== "23505") throw new Error(err);
+
+      return 0;
+    }
   },
 
   addBookToCart: async (bookId, userId) => {
@@ -110,20 +233,20 @@ const databaseService = {
     return (
       await database.query(
         `
-          INSERT INTO public.carts
-          (
-            book_id,
-            user_id,
-            book_title,
-            book_price,
-            book_remaining,
-            amount
-          )
-          VALUES ($1, $2, $3, $4, $5, $6)
-          ON CONFLICT (book_id, user_id)
-          DO UPDATE SET amount = public.carts.amount + 1
-          RETURNING *;
-          `,
+        INSERT INTO public.carts
+        (
+          book_id,
+          user_id,
+          book_title,
+          book_price,
+          book_remaining,
+          amount
+        )
+        VALUES ($1, $2, $3, $4, $5, $6)
+        ON CONFLICT (book_id, user_id)
+        DO UPDATE SET amount = public.carts.amount + 1
+        RETURNING *;
+        `,
         [
           bookId,
           userId,
@@ -136,83 +259,13 @@ const databaseService = {
     ).rows[0];
   },
 
-  fetchUsersBy: async (filter, value) => {
-    switch (filter) {
-      case "email":
-        return (
-          await database.query(
-            `
-              SELECT * FROM users 
-              WHERE email = $1
-              `,
-            [value]
-          )
-        ).rows;
-      case "id":
-        return (
-          await database.query(
-            `
-                SELECT * FROM users 
-                WHERE id = $1
-                `,
-            [value]
-          )
-        ).rows;
-    }
-  },
-
-  fetchAllUsersRoles: async () => {
-    return (
-      await database.query(
-        `
-                SELECT email, role,
-            CASE
-              WHEN role = 'admin' THEN 'admin'
-              WHEN role = 'user' THEN 'user'
-              ELSE 'other'
-            END AS role
-          FROM user_roles
-            ORDER BY CASE
-              WHEN role = 'admin' THEN 1
-              WHEN role = 'user' THEN 2
-              ELSE 3
-            END;
-        `
-      )
-    ).rows;
-  },
-
-  fetchUserByHighestRole: async (id) => {
-    return (
-      await database.query(
-        `
-          SELECT email, role,
-            CASE
-              WHEN role = 'admin' THEN 'admin'
-              WHEN role = 'user' THEN 'user'
-              ELSE 'other'
-            END AS role
-          FROM user_roles
-          WHERE user_id = $1
-            ORDER BY CASE
-              WHEN role = 'admin' THEN 1
-              WHEN role = 'user' THEN 2
-              ELSE 3
-            END
-          LIMIT 1;
-          `,
-        [id]
-      )
-    ).rows[0];
-  },
-
   addUser: async (email, hash, name) => {
     var userTableUser = (
       await database.query(
         `
-          INSERT INTO users (email, password, name)
-          VALUES ($1, $2, $3) RETURNING *
-          `,
+        INSERT INTO users (email, password, name)
+        VALUES ($1, $2, $3) RETURNING *
+        `,
         [email, hash, name]
       )
     ).rows[0];
@@ -222,10 +275,10 @@ const databaseService = {
     var roleTableUser = (
       await database.query(
         `
-          INSERT INTO user_roles (user_id, role_id, email, role)
-          VALUES ($1, $2, $3, $4)
-          RETURNING *
-          `,
+        INSERT INTO user_roles (user_id, role_id, email, role)
+        VALUES ($1, $2, $3, $4)
+        RETURNING *
+        `,
         [userTableUser.id, USER_ROLE_ID, email, USER_ROLE_NAME]
       )
     ).rows[0];
@@ -245,64 +298,45 @@ const databaseService = {
   } = {}) => {
     return await database.query(
       `
-        INSERT INTO public.logs
-        (
-          event,
-          object,
-          description,
-          created_on,
-          created_by
-        )
-        VALUES
-        ($1, $2, $3, now(), $4)
-        RETURNING id
-        `,
+      INSERT INTO public.logs
+      (
+        event,
+        object,
+        description,
+        created_on,
+        created_by
+      )
+      VALUES
+      ($1, $2, $3, now(), $4)
+      RETURNING id
+      `,
       [event, object, description, createdBy]
     );
-  },
-
-  addSubscriber: async (email) => {
-    try {
-      return (
-        await database.query(
-          `
-        INSERT INTO public.subscribers
-        (
-          email
-        )
-        VALUES
-        ($1)
-        RETURNING id
-        `,
-          [email]
-        )
-      ).rows[0].id;
-    } catch (err) {
-      if (err.code !== "23505") throw new Error(err);
-
-      return 0;
-    }
-  },
-
-  fetchSubscribers: async () => {
-    return (
-      await database.query(
-        `
-        SELECT * FROM public.subscribers
-        `
-      )
-    ).rows;
   },
 
   updateRole: async (role, email) => {
     return await database.query(
       `
-        UPDATE user_roles
-        SET role = $1
-        WHERE email = $2
-        RETURNING id
-        `,
+      UPDATE user_roles
+      SET role = $1
+      WHERE email = $2
+      RETURNING id
+      `,
       [role, email]
+    );
+  },
+
+  deleteBookFromCart: async (userId, bookId) => {
+    return await database.query(
+      `
+      DELETE from carts
+      WHERE 
+        user_id = $1
+      AND
+        book_id = $2
+      RETURNING *
+      `,
+      [userId, bookId]
     );
   },
 
@@ -310,50 +344,35 @@ const databaseService = {
     const USER_ID = (await fetchUsersBy("email", email))[0].id;
     await database.query(
       `
-        DELETE FROM user_roles
-        WHERE email = $1
-        `,
+      DELETE FROM user_roles
+      WHERE email = $1
+      `,
       [email]
     );
 
     await database.query(
       `
-        DELETE FROM subscribers
-        WHERE email = $1
-        `,
+      DELETE FROM subscribers
+      WHERE email = $1
+      `,
       [email]
     );
 
     await database.query(
       `
-        DELETE FROM carts
-        WHERE user_id = $1
-        `,
+      DELETE FROM carts
+      WHERE user_id = $1
+      `,
       [USER_ID]
     );
 
     await database.query(
       `
-        DELETE FROM users
-        WHERE email = $1
-        `,
+      DELETE FROM users
+      WHERE email = $1
+      `,
       [email]
     );
-  },
-
-  fetchCategories: async () => {
-    const categoryObjects = (
-      await database.query(
-        `
-      SELECT name FROM public.categories
-      `
-      )
-    ).rows;
-    const categories = [];
-    categoryObjects.map((category) => {
-      categories.push(category.name);
-    });
-    return categories;
   },
 };
 

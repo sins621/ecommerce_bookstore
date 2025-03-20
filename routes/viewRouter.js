@@ -24,4 +24,5 @@ router.get("/logout", viewController.logout);
 router.get("/register", viewController.registerForm);
 router.post("/register", viewController.register);
 
+
 export default router;

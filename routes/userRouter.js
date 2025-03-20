@@ -11,4 +11,5 @@ router.post("/add-review", userController.addBookReview)
 router.post("/add-subscriber", userController.addSubscriber);
 router.post("/cart/add-book", userController.addBooktoCart);
 
+router.delete("/remove-book", userController.deleteBookFromCart);
 export default router;

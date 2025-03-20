@@ -59,6 +59,13 @@ const userController = {
 
     return res.json({ message: "Email added successfully." }).status(201);
   },
+
+  deleteBookFromCart: async (req, res) => {
+    const userId = req.user.id;
+    const bookId = req.body.book_id;
+    const response = await databaseService.deleteBookFromCart(userId, bookId)
+    res.json({message: "Book Removed From Cart Successfully."}).status(200);
+  },
 };
 
 export default userController;
