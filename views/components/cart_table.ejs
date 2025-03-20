@@ -98,9 +98,9 @@
     });
 
     const cartTotalText = document.getElementsByClassName("cart-total")[0];
-    const cartTotal = cart.cart.reduce((total, book) => total += parseFloat(
-      book.book_price), 0);
+    const cartTotal = cart.cart.reduce((total, book) => total += parseFloat(book
+      .book_price), 0);
     cartTotalText.innerHTML = "R" + cartTotal;
-
+    // I am him
   }
 </script>
