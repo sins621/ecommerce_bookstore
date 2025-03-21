@@ -115,13 +115,23 @@ const databaseService = {
       )
     ).rows;
 
-    return query.map(user => {
+    return query.map((user) => {
       return {
         user_id: user.user_id,
         email: user.email,
         roles: user.roles.split(","),
-      }
-    })
+      };
+    });
+  },
+
+  fetchAllRoles: async () => {
+    return (
+      await database.query(
+        `
+        SELECT * FROM public.roles
+        `
+      )
+    ).rows;
   },
 
   fetchUserByHighestRole: async (id) => {
@@ -131,6 +141,7 @@ const databaseService = {
         SELECT email, role,
           CASE
             WHEN role = 'admin' THEN 'admin'
+            WHEN role = 'operations' THEN 'operations'
             WHEN role = 'user' THEN 'user'
             ELSE 'other'
           END AS role
@@ -138,8 +149,9 @@ const databaseService = {
         WHERE user_id = $1
           ORDER BY CASE
             WHEN role = 'admin' THEN 1
-            WHEN role = 'user' THEN 2
-            ELSE 3
+            WHEN role = 'operations' THEN 2
+            WHEN role = 'user' THEN 3
+            ELSE 4
           END
         LIMIT 1;
         `,

@@ -24,6 +24,10 @@ const userController = {
     }
   },
 
+  fetchAllRoles: async (req, res) => {
+    return res.json(await databaseService.fetchAllRoles());
+  },
+
   fetchUserRoles: async (req, res) => {
     return res.json(await databaseService.fetchAllUsersRoles());
   },
