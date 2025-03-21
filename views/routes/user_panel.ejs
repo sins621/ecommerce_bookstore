@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head.ejs') %>
+</head>
+
+<body>
+  <% if (locals.user) { %>
+  <%- include('../partials/header', {user: user, cart: cart}) %>
+  <% } else { %>
+  <%- include('../partials/header') %>
+  <% } %>
+  <hr>
+  <%- include ('../components/user_table'); %>
+  <%- include ('../partials/footer'); %>
+</body>
+<script src="scripts/scripts.js"></script>
+<script src="scripts/user_panel.js"></script>
+</html>

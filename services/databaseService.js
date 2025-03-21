@@ -88,28 +88,40 @@ const databaseService = {
             [value]
           )
         ).rows;
+      case "none":
+        return (
+          await database.query(
+            `
+            SELECT * FROM users
+            `
+          )
+        ).rows;
     }
   },
 
   fetchAllUsersRoles: async () => {
-    return (
+    const query = (
       await database.query(
         `
-        SELECT email, role,
-        CASE
-          WHEN role = 'admin' THEN 'admin'
-          WHEN role = 'user' THEN 'user'
-          ELSE 'other'
-          END AS role
-        FROM user_roles
-        ORDER BY CASE
-          WHEN role = 'admin' THEN 1
-          WHEN role = 'user' THEN 2
-          ELSE 3
-          END;
+        SELECT 
+          user_id,
+          email,
+          string_agg(role, ',') AS roles
+          FROM 
+              user_roles
+          GROUP BY
+              user_id, email;
         `
       )
     ).rows;
+
+    return query.map(user => {
+      return {
+        user_id: user.user_id,
+        email: user.email,
+        roles: user.roles.split(","),
+      }
+    })
   },
 
   fetchUserByHighestRole: async (id) => {
@@ -314,6 +326,7 @@ const databaseService = {
     );
   },
 
+  //flawed
   updateRole: async (role, email) => {
     return await database.query(
       `

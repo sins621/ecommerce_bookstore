@@ -1,0 +1,19 @@
+<table>
+  <tr>
+    <th>email</th>
+    <th>role</th>
+  </tr>
+  <% users.forEach((user) => { %>
+  <tr>
+    <td><%= user.email %></td>
+    <td>
+      <% user.roles.forEach(role => { %>
+      <% if (role !== "user") { %>
+      <%= role %>
+      <input type="checkbox" name="<%= role %>" id="<%= user.user_id %>-<%= role %>">
+      <% } %>
+      <% }) %>
+    </td>
+    <% }); %>
+  </tr>
+</table>

@@ -58,12 +58,20 @@ const viewController = {
     return res.render("routes/cart.ejs", {
       cart,
       user: req.user.id,
-    })
+    });
   },
 
   addBook: (req, res) => {
     // if (!req.isAuthenticated() || req.user.role != "admin") return res.redirect("/login");
     return res.render("routes/add_book.ejs");
+  },
+
+  siteUsers: async (req, res) => {
+    const users = await databaseService.fetchAllUsersRoles();
+
+    return res.render("routes/user_panel", {
+      users,
+    });
   },
 
   loginForm: (req, res) => {
