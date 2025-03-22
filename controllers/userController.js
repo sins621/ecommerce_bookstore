@@ -42,7 +42,7 @@ const userController = {
     // TODO: Add Check for User Logged In
     const bookId = req.body.book_id;
     await databaseService.addBookToCart(bookId, req.user.id);
-    await res.send("OK").status(200);
+    await res.json({ message: "OK" }).status(200);
   },
 
   addBookReview: async (req, res) => {
@@ -56,7 +56,7 @@ const userController = {
       req.body.rating,
       req.body.book_id,
     ]);
-    await res.send("OK").status(200);
+    await res.json({ message: "OK" }).status(200);
   },
 
   addSubscriber: async (req, res) => {
@@ -68,11 +68,27 @@ const userController = {
     return res.json({ message: "Email added successfully." }).status(201);
   },
 
+  addRole: async (req, res) => {
+    const userId = req.body.user_id;
+    const roleId = req.body.role_id;
+    await databaseService.addRole(userId, roleId);
+    await res.json({ message: "OK" }).status(200);
+  },
+
   deleteBookFromCart: async (req, res) => {
     const userId = req.user.id;
     const bookId = req.body.book_id;
-    const response = await databaseService.deleteBookFromCart(userId, bookId);
-    res.json({ message: "Book Removed From Cart Successfully." }).status(200);
+    await databaseService.deleteBookFromCart(userId, bookId);
+    res.res
+      .json({ message: "Book Removed From Cart Successfully." })
+      .status(200);
+  },
+
+  deleteRole: async (req, res) => {
+    const userId = req.body.user_id;
+    const roleId = req.body.role_id;
+    await databaseService.deleteRole(userId, roleId);
+    await res.json({ message: "OK" }).status(200);
   },
 };
 

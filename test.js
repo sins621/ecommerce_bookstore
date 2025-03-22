@@ -28,4 +28,14 @@ import databaseService from "./services/databaseService.js";
 
 // console.log(await databaseService.fetchAllRoles());
 // console.log(await ((await fetch("http://localhost:6199/users/roles")).json()))
+
+const fetchResult = await fetch("http://localhost:6199/users/remove-role", {
+  method: "DELETE",
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ user_id: 14, role_id: 3 }),
+});
+
 process.exit();

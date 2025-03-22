@@ -329,17 +329,42 @@ const databaseService = {
     );
   },
 
-  //flawed
-  updateRole: async (role, email) => {
-    return await database.query(
-      `
-      UPDATE user_roles
-      SET role = $1
-      WHERE email = $2
-      RETURNING id
-      `,
-      [role, email]
-    );
+  addRole: async (userId, roleId) => {
+    const existingRole = (
+      await database.query(
+        `
+        SELECT * FROM user_roles
+        WHERE
+          user_id = $1
+        AND
+        role_id = $2
+        `,
+        [userId, roleId]
+      )
+    ).rows[0];
+
+    if (existingRole) return 0;
+
+    return (
+      await database.query(
+        `
+        INSERT INTO user_roles (user_id, role_id, email, role)
+        SELECT
+            $1,
+            $2,
+            users.email,
+            roles.role
+        FROM
+            users,
+            roles
+        WHERE
+            users.id = $1 AND
+            roles.id = $2
+        RETURNING *;
+        `,
+        [userId, roleId]
+      )
+    ).rows[0];
   },
 
   deleteBookFromCart: async (userId, bookId) => {
@@ -389,6 +414,36 @@ const databaseService = {
       `,
       [email]
     );
+  },
+
+  deleteRole: async (userId, roleId) => {
+    const existingRole = (
+      await database.query(
+        `
+        SELECT * FROM user_roles
+        WHERE
+          user_id = $1
+        AND
+        role_id = $2
+        `,
+        [userId, roleId]
+      )
+    ).rows[0];
+
+    if (!existingRole) return 0;
+
+    await database.query(
+      `
+      DELETE FROM user_roles
+      WHERE
+        user_id = $1
+      AND
+        role_id = $2
+      `,
+      [userId, roleId]
+    );
+
+    return 1;
   },
 };
 

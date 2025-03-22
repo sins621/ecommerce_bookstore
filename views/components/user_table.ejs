@@ -27,15 +27,38 @@
   async function updateRole(userId, roleId) {
     checkBox = document.getElementById(`${userId}-${roleId}`)
 
-    checkBox.checked ? console.log(`${userId}-${roleId} Checked`) : console.log(
-      `${userId}-${roleId} Unchecked`)
+    checkBox.checked ? addRole(userId, roleId) : removeRole(userId, roleId);
   }
 
   async function addRole(userId, roleId) {
-
+    const result = await fetch(
+      "http://localhost:6199/users/add-role", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          role_id: roleId
+        }),
+      });
+    return await result.json()
   }
 
   async function removeRole(userId, roleId) {
-
+    const result = await fetch(
+      "http://localhost:6199/users/remove-role", {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          role_id: roleId
+        }),
+      });
+    return await result.json()
   }
 </script>
