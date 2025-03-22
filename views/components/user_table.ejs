@@ -10,12 +10,32 @@
       <% roles.forEach(role => { %>
       <% if (role.role !== "user") { %>
       <%= role.role %>
-      <input type="checkbox" name="<%= role.role %>"
-          id="<%= role.id %>-<%= role.role %>"
-          <%= user.roles.includes(role.role) && "checked" %>>
+      <input type="checkbox" class="role-checkbox" name="<%= role.role %>"
+          id="<%= user.user_id %>-<%= role.id %>"
+          <%= user.roles.includes(role.role) && "checked" %>
+          onclick="updateRole('<%= user.user_id %>','<%= role.id %>')">
       <% } %>
       <% }) %>
     </td>
     <% }); %>
   </tr>
 </table>
+
+<script>
+  const checkBoxes = document.querySelectorAll("input[type=checkbox]");
+
+  async function updateRole(userId, roleId) {
+    checkBox = document.getElementById(`${userId}-${roleId}`)
+
+    checkBox.checked ? console.log(`${userId}-${roleId} Checked`) : console.log(
+      `${userId}-${roleId} Unchecked`)
+  }
+
+  async function addRole(userId, roleId) {
+
+  }
+
+  async function removeRole(userId, roleId) {
+
+  }
+</script>
