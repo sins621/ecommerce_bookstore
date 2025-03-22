@@ -23,8 +23,8 @@ import databaseService from "./services/databaseService.js";
 
 // console.log(await fetchResult.json())
 
-// console.log(await databaseService.fetchAllUsersRoles())
-console.log(await (await fetch("http://localhost:6199/users/user-roles")).json())
+// console.log(await databaseService.fetchAllUsersRoles());
+// console.log(await (await fetch("http://localhost:6199/users/user-roles")).json())
 
 // console.log(await databaseService.fetchAllRoles());
 // console.log(await ((await fetch("http://localhost:6199/users/roles")).json()))

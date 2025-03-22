@@ -69,26 +69,17 @@ const databaseService = {
   fetchUsersBy: async (filter, value) => {
     switch (filter) {
       case "email":
-        return (
-          await database.query(
-            `
-            SELECT * FROM users 
-            WHERE email = $1
-            `,
-            [value]
-          )
-        ).rows;
       case "id":
         return (
           await database.query(
             `
             SELECT * FROM users 
-            WHERE id = $1
+            WHERE $1 = $1
             `,
             [value]
           )
         ).rows;
-      case "none":
+      default:
         return (
           await database.query(
             `
