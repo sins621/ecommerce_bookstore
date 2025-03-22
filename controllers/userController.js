@@ -72,7 +72,7 @@ const userController = {
     const userId = req.body.user_id;
     const roleId = req.body.role_id;
     await databaseService.addRole(userId, roleId);
-    await res.json({ message: "OK" }).status(200);
+    await res.json({ message: "Role Successfully Added" }).status(201);
   },
 
   deleteBookFromCart: async (req, res) => {
@@ -88,7 +88,7 @@ const userController = {
     const userId = req.body.user_id;
     const roleId = req.body.role_id;
     await databaseService.deleteRole(userId, roleId);
-    await res.json({ message: "OK" }).status(200);
+    await res.json({ message: "Role Successfully Removed" }).status(204);
   },
 };
 
