@@ -4,6 +4,8 @@ import userController from "../controllers/userController.js";
 const router = express.Router();
 
 router.get("/user/:id", userController.fetchUserById);
+router.get("/user-roles", userController.fetchUserRoles);
+router.get("/roles", userController.fetchAllRoles);
 router.get("/reviews/:id", userController.fetchReviews);
 router.get("/cart", userController.fetchCartItems);
 

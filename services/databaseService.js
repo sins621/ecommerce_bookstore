@@ -69,44 +69,57 @@ const databaseService = {
   fetchUsersBy: async (filter, value) => {
     switch (filter) {
       case "email":
-        return (
-          await database.query(
-            `
-            SELECT * FROM users 
-            WHERE email = $1
-            `,
-            [value]
-          )
-        ).rows;
       case "id":
         return (
           await database.query(
             `
             SELECT * FROM users 
-            WHERE id = $1
+            WHERE $1 = $1
             `,
             [value]
+          )
+        ).rows;
+      default:
+        return (
+          await database.query(
+            `
+            SELECT * FROM users
+            `
           )
         ).rows;
     }
   },
 
   fetchAllUsersRoles: async () => {
+    const query = (
+      await database.query(
+        `
+        SELECT 
+          user_id,
+          email,
+          string_agg(role, ',') AS roles
+          FROM 
+              user_roles
+          GROUP BY
+              user_id, email;
+        `
+      )
+    ).rows;
+
+    return query.map((user) => {
+      return {
+        user_id: user.user_id,
+        email: user.email,
+        roles: user.roles.split(","),
+      };
+    });
+  },
+
+  fetchAllRoles: async () => {
     return (
       await database.query(
         `
-        SELECT email, role,
-        CASE
-          WHEN role = 'admin' THEN 'admin'
-          WHEN role = 'user' THEN 'user'
-          ELSE 'other'
-          END AS role
-        FROM user_roles
-        ORDER BY CASE
-          WHEN role = 'admin' THEN 1
-          WHEN role = 'user' THEN 2
-          ELSE 3
-          END;
+        SELECT * FROM public.roles
         `
       )
     ).rows;
@@ -119,6 +132,7 @@ const databaseService = {
         SELECT email, role,
           CASE
             WHEN role = 'admin' THEN 'admin'
+            WHEN role = 'operations' THEN 'operations'
             WHEN role = 'user' THEN 'user'
             ELSE 'other'
           END AS role
@@ -126,8 +140,9 @@ const databaseService = {
         WHERE user_id = $1
           ORDER BY CASE
             WHEN role = 'admin' THEN 1
-            WHEN role = 'user' THEN 2
-            ELSE 3
+            WHEN role = 'operations' THEN 2
+            WHEN role = 'user' THEN 3
+            ELSE 4
           END
         LIMIT 1;
         `,
@@ -314,6 +329,7 @@ const databaseService = {
     );
   },
 
+  //flawed
   updateRole: async (role, email) => {
     return await database.query(
       `

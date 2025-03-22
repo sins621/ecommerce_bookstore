@@ -24,6 +24,14 @@ const userController = {
     }
   },
 
+  fetchAllRoles: async (req, res) => {
+    return res.json(await databaseService.fetchAllRoles());
+  },
+
+  fetchUserRoles: async (req, res) => {
+    return res.json(await databaseService.fetchAllUsersRoles());
+  },
+
   fetchReviews: async (req, res) => {
     const reviews = await databaseService.fetchBookReviews(req.params.id);
     console.log(reviews);
@@ -63,8 +71,8 @@ const userController = {
   deleteBookFromCart: async (req, res) => {
     const userId = req.user.id;
     const bookId = req.body.book_id;
-    const response = await databaseService.deleteBookFromCart(userId, bookId)
-    res.json({message: "Book Removed From Cart Successfully."}).status(200);
+    const response = await databaseService.deleteBookFromCart(userId, bookId);
+    res.json({ message: "Book Removed From Cart Successfully." }).status(200);
   },
 };
 
