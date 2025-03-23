@@ -35,14 +35,14 @@ const userController = {
   fetchReviews: async (req, res) => {
     const reviews = await databaseService.fetchBookReviews(req.params.id);
     console.log(reviews);
-    return res.json({ reviews }).status(200);
+    return res.json({ reviews });
   },
 
   addBooktoCart: async (req, res) => {
     // TODO: Add Check for User Logged In
     const bookId = req.body.book_id;
     await databaseService.addBookToCart(bookId, req.user.id);
-    await res.json({ message: "OK" }).status(200);
+    await res.json({ message: "OK" });
   },
 
   addBookReview: async (req, res) => {
@@ -56,7 +56,7 @@ const userController = {
       req.body.rating,
       req.body.book_id,
     ]);
-    await res.json({ message: "OK" }).status(200);
+    await res.json({ message: "OK" });
   },
 
   addSubscriber: async (req, res) => {
@@ -79,9 +79,7 @@ const userController = {
     const userId = req.user.id;
     const bookId = req.body.book_id;
     await databaseService.deleteBookFromCart(userId, bookId);
-    res.res
-      .json({ message: "Book Removed From Cart Successfully." })
-      .status(200);
+    res.res.json({ message: "Book Removed From Cart Successfully." });
   },
 
   deleteRole: async (req, res) => {

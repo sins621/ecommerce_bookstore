@@ -48,7 +48,7 @@ const bookController = {
       req.body.quantity,
       req.body.price,
     ]);
-    return res.send("OK").status(200);
+    return res.json({ message: "Book Added" });
   },
 };
 
