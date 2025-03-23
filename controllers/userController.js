@@ -79,7 +79,7 @@ const userController = {
     const userId = req.user.id;
     const bookId = req.body.book_id;
     await databaseService.deleteBookFromCart(userId, bookId);
-    res.res.json({ message: "Book Removed From Cart Successfully." });
+    res.json({ message: "Book Removed From Cart Successfully." });
   },
 
   deleteRole: async (req, res) => {
