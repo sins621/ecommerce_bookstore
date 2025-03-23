@@ -88,12 +88,10 @@ const viewController = {
 
   register: async (req, res) => {
     if (!req.body) return res.send("Server Error").status(500);
-
     const email = req.body.username;
     const password = req.body.password;
     const name = req.body.name;
     var checkResult = await databaseService.fetchUsersBy("email", email);
-
     if (checkResult.length > 0) return res.redirect("/login");
 
     const hash = await bcrypt.hash(password, SALT_ROUNDS);

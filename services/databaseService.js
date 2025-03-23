@@ -74,9 +74,9 @@ const databaseService = {
           await database.query(
             `
             SELECT * FROM users 
-            WHERE $1 = $1
+            WHERE $1 = $2
             `,
-            [value]
+            [filter, value]
           )
         ).rows;
       default:
