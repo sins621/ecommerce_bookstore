@@ -123,6 +123,15 @@ const userController = {
     const userId = req.body.user_id;
     const roleId = req.body.role_id;
     await databaseService.deleteRole(userId, roleId);
+    const userEmail = (await databaseService.fetchUsersBy("id", userId))[0]
+      .email;
+    const roleName = (await databaseService.fetchRole(roleId))[0].role;
+    await databaseService.addLog({
+      event: "Add",
+      object: "Roles",
+      description: `Role "${roleName}" removed from User "${userEmail}"`,
+      createdBy: req.user.email,
+    });
     await res.json({ message: "Role Successfully Removed" }).status(204);
   },
 
