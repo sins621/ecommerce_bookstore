@@ -87,6 +87,12 @@ const userController = {
     if (!response)
       return res.json({ error: "Email is already subscribed" }).status(409);
 
+    await databaseService.addLog({
+      event: "Add",
+      object: "Subscribers",
+      description: `Email "${req.body.email}" added to Subscription List`,
+      createdBy: "Anonymous",
+    });
     return res.json({ message: "Email added successfully." }).status(201);
   },
 
