@@ -69,6 +69,15 @@ const userController = {
       req.body.rating,
       req.body.book_id,
     ]);
+    const bookName = (
+      await databaseService.fetchBooksBy("id", req.body.book_id)
+    )[0].title;
+    await databaseService.addLog({
+      event: "Add",
+      object: "Reviews",
+      description: `User ${req.user.email} added Review "${req.body.review_title}" to "${bookName}"`,
+      createdBy: req.user.email,
+    });
     await res.json({ message: "OK" });
   },
 
