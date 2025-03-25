@@ -135,7 +135,7 @@ const userController = {
       .email;
     const roleName = (await databaseService.fetchRole(roleId))[0].role;
     await databaseService.addLog({
-      event: "Add",
+      event: "Remove",
       object: "Roles",
       description: `Role "${roleName}" removed from User "${userEmail}"`,
       createdBy: req.user.email,
