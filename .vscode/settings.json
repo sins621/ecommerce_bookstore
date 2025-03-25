@@ -8,5 +8,10 @@
   "html.format.templating": true,
   "[html]": {
     "editor.defaultFormatter": "j69.ejs-beautify"
-  }
+  },
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "The commit message description should be in kebab case and the title should prefix the description with a forward slash. For example: feat/add-user-management-features"
+    }
+  ]
 }

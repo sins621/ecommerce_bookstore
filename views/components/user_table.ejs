@@ -1,10 +1,11 @@
-<table>
+<table class="user-table">
   <tr>
     <th>email</th>
     <th>role</th>
+    <th>actions</th>
   </tr>
   <% users.forEach((user) => { %>
-  <tr>
+  <tr id="row-<%= user.user_id %>">
     <td><%= user.email %></td>
     <td>
       <% roles.forEach(role => { %>
@@ -17,11 +18,35 @@
       <% } %>
       <% }) %>
     </td>
+    <td>
+      <button onclick="removeUser('<%= user.user_id %>')">remove</button>
+    </td>
     <% }); %>
   </tr>
 </table>
 
 <script>
+  async function removeUser(userId) {
+    const result = await fetch(
+      "http://localhost:6199/users/remove-user", {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userId
+        }),
+      });
+
+    if (result.ok) {
+      const row = document.getElementById(`row-${userId}`);
+      if (row) {
+        row.remove();
+      }
+    }
+  }
+
   const checkBoxes = document.querySelectorAll("input[type=checkbox]");
 
   async function updateRole(userId, roleId) {

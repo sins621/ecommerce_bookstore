@@ -69,14 +69,23 @@ const databaseService = {
   fetchUsersBy: async (filter, value) => {
     switch (filter) {
       case "email":
+        return (
+          await database.query(
+            `
+            SELECT * FROM users
+            WHERE email = $1
+            `,
+            [value]
+          )
+        ).rows;
       case "id":
         return (
           await database.query(
             `
-            SELECT * FROM users 
-            WHERE $1 = $2
+            SELECT * FROM users
+            WHERE id = $1
             `,
-            [filter, value]
+            [value]
           )
         ).rows;
       default:
@@ -381,14 +390,15 @@ const databaseService = {
     );
   },
 
-  deleteUser: async (email) => {
-    const USER_ID = (await fetchUsersBy("email", email))[0].id;
+  deleteUser: async (id) => {
+    const email = (await databaseService.fetchUsersBy("id", id))[0].email;
+
     await database.query(
       `
       DELETE FROM user_roles
-      WHERE email = $1
+      WHERE user_id = $1
       `,
-      [email]
+      [id]
     );
 
     await database.query(
@@ -404,15 +414,15 @@ const databaseService = {
       DELETE FROM carts
       WHERE user_id = $1
       `,
-      [USER_ID]
+      [id]
     );
 
     await database.query(
       `
       DELETE FROM users
-      WHERE email = $1
+      WHERE id = $1
       `,
-      [email]
+      [id]
     );
   },
 

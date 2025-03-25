@@ -4,6 +4,7 @@ import userController from "../controllers/userController.js";
 const router = express.Router();
 
 router.get("/user/:id", userController.fetchUserById);
+router.get("/all-users", userController.fetchAllUsers);
 router.get("/user-roles", userController.fetchUserRoles);
 router.get("/roles", userController.fetchAllRoles);
 router.get("/reviews/:id", userController.fetchReviews);
@@ -16,5 +17,6 @@ router.post("/cart/add-book", userController.addBooktoCart);
 
 router.delete("/remove-book", userController.deleteBookFromCart);
 router.delete("/remove-role", userController.deleteRole);
+router.delete("/remove-user", userController.deleteUser);
 
 export default router;

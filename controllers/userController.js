@@ -1,6 +1,11 @@
 import databaseService from "../services/databaseService.js";
 
 const userController = {
+  fetchAllUsers: async (req, res) => {
+    const users = await databaseService.fetchUsersBy();
+    return res.json({ users });
+  },
+
   fetchUserById: async (req, res) => {
     const userId = req.params.id;
     const users = await databaseService.fetchUsersBy("id", userId);
@@ -88,6 +93,12 @@ const userController = {
     await databaseService.deleteRole(userId, roleId);
     await res.json({ message: "Role Successfully Removed" }).status(204);
   },
+
+  deleteUser: async (req, res) => {
+    const userId = req.body.user_id;
+    await databaseService.deleteUser(userId);
+    await res.json({ message: "User Successfully Deleted" }).status(204);
+  }
 };
 
 export default userController;
