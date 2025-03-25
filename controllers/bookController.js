@@ -48,7 +48,7 @@ const bookController = {
       req.body.quantity,
       req.body.price,
     ]);
-    
+
     await databaseService.addLog({
       event: "Add",
       object: "Books",
