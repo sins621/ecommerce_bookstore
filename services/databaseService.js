@@ -124,6 +124,18 @@ const databaseService = {
     });
   },
 
+  fetchRole: async (id) => {
+    return (
+      await database.query(
+        `
+        SELECT * FROM public.roles
+        WHERE id = $1
+        `,
+        [id]
+      )
+    ).rows;
+  },
+
   fetchAllRoles: async () => {
     return (
       await database.query(
