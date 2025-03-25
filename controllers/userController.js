@@ -116,6 +116,14 @@ const userController = {
     const userId = req.user.id;
     const bookId = req.body.book_id;
     await databaseService.deleteBookFromCart(userId, bookId);
+    const bookName = (await databaseService.fetchBooksBy("id", bookId))[0]
+      .title;
+    await databaseService.addLog({
+      event: "Remove",
+      object: "Cart",
+      description: `User ${req.user.email} removed "${bookName}" from their Cart`,
+      createdBy: req.user.email,
+    });
     res.json({ message: "Book Removed From Cart Successfully." });
   },
 
