@@ -47,6 +47,14 @@ const userController = {
     // TODO: Add Check for User Logged In
     const bookId = req.body.book_id;
     await databaseService.addBookToCart(bookId, req.user.id);
+    const bookName = (await databaseService.fetchBooksBy("id", bookId))[0]
+      .title;
+    await databaseService.addLog({
+      event: "Add",
+      object: "Cart",
+      description: `User ${req.user.email} added "${bookName}" to their Cart`,
+      createdBy: req.user.email,
+    });
     await res.json({ message: "OK" });
   },
 
@@ -98,7 +106,7 @@ const userController = {
     const userId = req.body.user_id;
     await databaseService.deleteUser(userId);
     await res.json({ message: "User Successfully Deleted" }).status(204);
-  }
+  },
 };
 
 export default userController;
