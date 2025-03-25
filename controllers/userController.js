@@ -145,7 +145,15 @@ const userController = {
 
   deleteUser: async (req, res) => {
     const userId = req.body.user_id;
+    const userEmail = (await databaseService.fetchUsersBy("id", userId))[0]
+      .email;
     await databaseService.deleteUser(userId);
+    await databaseService.addLog({
+      event: "Remove",
+      object: "Users",
+      description: `User "${userEmail}" Removed from the Database`,
+      createdBy: userEmail,
+    });
     await res.json({ message: "User Successfully Deleted" }).status(204);
   },
 };
