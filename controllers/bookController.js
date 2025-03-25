@@ -48,6 +48,13 @@ const bookController = {
       req.body.quantity,
       req.body.price,
     ]);
+    
+    await databaseService.addLog({
+      event: "Add",
+      object: "Books",
+      description: `User "${req.user.email}" Added "${req.body.title}" to the Catalog`,
+      createdBy: req.user.email,
+    });
     return res.json({ message: "Book Added" });
   },
 };
