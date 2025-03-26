@@ -72,3 +72,18 @@ async function updateCartItems() {
   );
   cartTotalText.innerHTML = "R" + cartTotal;
 }
+
+async function orderBooks() {
+  const cartItems = await fetchCartItems();
+  const bookIds = cartItems.cart.map((book) => book.book_id);
+  const response = await fetch("http://localhost:6199/users/orders/add-order", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ user_id: 4, book_ids: bookIds }),
+  });
+  await updateCartItems();
+  console.log(await response.json());
+}

@@ -46,7 +46,7 @@ const userController = {
   addBooktoCart: async (req, res) => {
     // TODO: Add Check for User Logged In
     const bookId = req.body.book_id;
-    await databaseService.addBookToCart(bookId, req.user.id);
+    await databaseService.addBookToCart(req.user.id, bookId);
     const bookName = (await databaseService.fetchBooksBy("id", bookId))[0]
       .title;
     await databaseService.addLog({
@@ -56,6 +56,28 @@ const userController = {
       createdBy: req.user.email,
     });
     await res.json({ message: "OK" });
+  },
+
+  addOrders: async (req, res) => {
+    const bookIds = req.body.book_ids;
+    const userId = req.user.id;
+    const bookTitles = [];
+
+    bookIds.forEach(async (bookId) => {
+      const bookTitle = (await databaseService.fetchBooksBy("id", bookId))[0]
+        .title;
+      bookTitles.push(bookTitle);
+      await databaseService.deleteBookFromCart(userId, bookId);
+      await databaseService.addBookToOrders(userId, bookId);
+    });
+
+    await databaseService.addLog({
+      event: "Add",
+      object: "Orders",
+      description: `User "${req.user.email}" Added Books "${bookTitles}" to their Orders`,
+      createdBy: req.user.email,
+    });
+    return res.json({ message: "Orders Added" });
   },
 
   addBookReview: async (req, res) => {

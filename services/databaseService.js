@@ -263,8 +263,8 @@ const databaseService = {
     }
   },
 
-  addBookToCart: async (bookId, userId) => {
-    const BOOK_INFO = (await databaseService.fetchBooksBy("id", bookId))[0];
+  addBookToCart: async (userId, bookId) => {
+    const bookInfo = (await databaseService.fetchBooksBy("id", bookId))[0];
 
     return (
       await database.query(
@@ -286,11 +286,35 @@ const databaseService = {
         [
           bookId,
           userId,
-          BOOK_INFO.title,
-          BOOK_INFO.price,
-          BOOK_INFO.quantity,
+          bookInfo.title,
+          bookInfo.price,
+          bookInfo.quantity,
           1,
         ]
+      )
+    ).rows[0];
+  },
+
+  addBookToOrders: async (userId, bookId) => {
+    const bookInfo = (await databaseService.fetchBooksBy("id", bookId))[0];
+
+    return (
+      await database.query(
+        `
+        INSERT INTO public.orders
+        (
+          book_id,
+          user_id,
+          book_title,
+          book_price,
+          amount
+        )
+        VALUES ($1, $2, $3, $4, $5)
+        ON CONFLICT (book_id, user_id)
+        DO UPDATE SET amount = public.orders.amount + 1
+        RETURNING *;
+        `,
+        [bookId, userId, bookInfo.title, bookInfo.price, 1]
       )
     ).rows[0];
   },
@@ -389,8 +413,9 @@ const databaseService = {
   },
 
   deleteBookFromCart: async (userId, bookId) => {
-    return await database.query(
-      `
+    return (
+      await database.query(
+        `
       DELETE from carts
       WHERE 
         user_id = $1
@@ -398,8 +423,9 @@ const databaseService = {
         book_id = $2
       RETURNING *
       `,
-      [userId, bookId]
-    );
+        [userId, bookId]
+      )
+    ).rows[0];
   },
 
   deleteUser: async (id) => {
