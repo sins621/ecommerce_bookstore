@@ -66,11 +66,11 @@ const viewController = {
     return res.render("routes/add_book.ejs");
   },
 
-  siteUsers: async (req, res) => {
+  admin: async (req, res) => {
     const users = await databaseService.fetchAllUsersRoles();
     const roles = await databaseService.fetchAllRoles();
 
-    return res.render("routes/user_panel", {
+    return res.render("routes/admin", {
       users,
       roles,
     });

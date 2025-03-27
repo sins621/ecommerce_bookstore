@@ -9,6 +9,8 @@ router.get("/user-roles", userController.fetchUserRoles);
 router.get("/roles", userController.fetchAllRoles);
 router.get("/reviews/:id", userController.fetchReviews);
 router.get("/cart", userController.fetchCartItems);
+router.get("/orders", userController.fetchCartItems);
+router.get("/sales", userController.fetchCartItems);
 
 router.post("/add-review", userController.addBookReview);
 router.post("/add-role", userController.addRole);

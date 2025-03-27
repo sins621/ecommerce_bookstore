@@ -29,6 +29,26 @@ const userController = {
     }
   },
 
+  fetchAllOrdersItems: async (req, res) => {
+    try {
+      const ordersItems = await databaseService.fetchAllOrdersItems();
+      if (ordersItems.length === 0) res.status(500);
+      return res.json({ orders: ordersItems });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+  fetchAllSalesItems: async (req, res) => {
+    try {
+      const salesItems = await databaseService.fetchAllSalesItems();
+      if (salesItems.length === 0) res.status(500);
+      return res.json({ sales: salesItems });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
   fetchAllRoles: async (req, res) => {
     return res.json(await databaseService.fetchAllRoles());
   },

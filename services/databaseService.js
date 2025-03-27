@@ -66,6 +66,26 @@ const databaseService = {
     ).rows;
   },
 
+  fetchAllOrdersItems: async () => {
+    return (
+      await database.query(
+        `
+        SELECT * FROM orders
+        `
+      )
+    ).rows;
+  },
+
+  fetchAllSalesItems: async () => {
+    return (
+      await database.query(
+        `
+        SELECT * FROM sales
+        `
+      )
+    ).rows;
+  },
+
   fetchUsersBy: async (filter, value) => {
     switch (filter) {
       case "email":
