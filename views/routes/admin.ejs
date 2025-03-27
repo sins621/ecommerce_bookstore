@@ -13,11 +13,11 @@
   <% } %>
   <hr>
   <h3>Users</h3>
-  <%- include ('../components/user_table'); %>
+  <%- include ('../components/user_table', {users}); %>
   <h3>Orders</h3>
-  <%- include ('../components/orders_table'); %>
+  <%- include ('../components/orders_table', {orders}); %>
   <h3>Sales</h3>
-  <%- include ('../components/sales_table'); %>
+  <%- include ('../components/sales_table', {sales}); %>
   <hr>
   <%- include ('../partials/footer'); %>
 </body>

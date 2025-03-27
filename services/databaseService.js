@@ -67,13 +67,26 @@ const databaseService = {
   },
 
   fetchAllOrdersItems: async () => {
-    return (
-      await database.query(
-        `
-        SELECT * FROM orders
-        `
-      )
-    ).rows;
+    const query = await database.query(
+      `
+      SELECT
+        user_id,
+        string_agg(book_id::TEXT, ',') AS book_ids,
+        string_agg(book_title, ',') AS book_titles
+      FROM
+        orders
+      GROUP BY
+        user_id;
+      `
+    );
+
+    return query.rows.map((order) => {
+      return {
+        user_id: order.user_id,
+        book_ids: order.book_ids.split(","),
+        book_titles: order.book_titles.split(','),
+      }
+    })
   },
 
   fetchAllSalesItems: async () => {
@@ -123,11 +136,11 @@ const databaseService = {
     const query = (
       await database.query(
         `
-        SELECT 
+        SELECT
           user_id,
           email,
           string_agg(role, ',') AS roles
-          FROM 
+          FROM
               user_roles
           GROUP BY
               user_id, email;

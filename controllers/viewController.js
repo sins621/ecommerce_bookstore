@@ -69,10 +69,14 @@ const viewController = {
   admin: async (req, res) => {
     const users = await databaseService.fetchAllUsersRoles();
     const roles = await databaseService.fetchAllRoles();
+    const orders = await databaseService.fetchAllOrdersItems();
+    const sales = await databaseService.fetchAllSalesItems();
 
     return res.render("routes/admin", {
       users,
       roles,
+      orders,
+      sales,
     });
   },
 

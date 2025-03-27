@@ -50,6 +50,6 @@ import databaseService from "./services/databaseService.js";
 
 // await databaseService.reduceBookAmount(11);
 
-const result = await databaseService.addBookToSales("test@test.com", 1);
+const result = await databaseService.fetchAllOrdersItems();
 console.log(result);
 process.exit();
