@@ -283,21 +283,13 @@ const databaseService = {
         DO UPDATE SET amount = public.carts.amount + 1
         RETURNING *;
         `,
-        [
-          bookId,
-          userId,
-          bookInfo.title,
-          bookInfo.price,
-          bookInfo.quantity,
-          1,
-        ]
+        [bookId, userId, bookInfo.title, bookInfo.price, bookInfo.quantity, 1]
       )
     ).rows[0];
   },
 
   addBookToOrders: async (userId, bookId) => {
     const bookInfo = (await databaseService.fetchBooksBy("id", bookId))[0];
-
     return (
       await database.query(
         `
@@ -315,6 +307,25 @@ const databaseService = {
         RETURNING *;
         `,
         [bookId, userId, bookInfo.title, bookInfo.price, 1]
+      )
+    ).rows[0];
+  },
+
+  addBookToSales: async (userEmail, bookId) => {
+    const bookInfo = (await databaseService.fetchBooksBy("id", bookId))[0];
+    return (
+      await database.query(
+        `
+        INSERT INTO public.sales
+        (
+          book_title,
+          buyer_email,
+          sold_on
+        )
+        VALUES ($1, $2, now())
+        RETURNING *;
+        `,
+        [bookInfo.title, userEmail]
       )
     ).rows[0];
   },
@@ -428,6 +439,22 @@ const databaseService = {
     ).rows[0];
   },
 
+  deleteBookFromOrders: async (userId, bookId) => {
+    return (
+      await database.query(
+        `
+      DELETE from orders
+      WHERE 
+        user_id = $1
+      AND
+        book_id = $2
+      RETURNING *
+      `,
+        [userId, bookId]
+      )
+    ).rows[0];
+  },
+
   deleteUser: async (id) => {
     const email = (await databaseService.fetchUsersBy("id", id))[0].email;
 
@@ -492,6 +519,32 @@ const databaseService = {
     );
 
     return 1;
+  },
+
+  reduceBookAmount: async (bookId) => {
+    await database.query(
+      `
+      UPDATE public.carts
+      SET
+        book_remaining = book_remaining - 1
+      WHERE
+        book_id = $1;
+      `,
+      [bookId]
+    );
+
+    return (
+      await database.query(
+        `
+        UPDATE public.books
+        SET
+          quantity = quantity - 1
+        WHERE
+          id = $1;
+        `,
+        [bookId]
+      )
+    ).rows;
   },
 };
 

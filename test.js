@@ -34,17 +34,22 @@ import databaseService from "./services/databaseService.js";
 // const result = await databaseService.addBookToOrders(4, 5);
 // console.log(result);
 
-const fetchResult = await fetch(
-  "http://localhost:6199/users/orders/add-order",
-  {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ user_id: 4, book_ids: [1, 2, 3] }),
-  }
-);
+// const fetchResult = await fetch(
+//   "http://localhost:6199/users/orders/add-order",
+//   {
+//     method: "POST",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ user_id: 4, book_ids: [1, 2, 3] }),
+//   }
+// );
 
-console.log(await fetchResult.json());
+// console.log(await fetchResult.json());
+
+// await databaseService.reduceBookAmount(11);
+
+const result = await databaseService.addBookToSales("test@test.com", 1);
+console.log(result);
 process.exit();

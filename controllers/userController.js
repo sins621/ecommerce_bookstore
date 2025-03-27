@@ -59,6 +59,7 @@ const userController = {
   },
 
   addOrders: async (req, res) => {
+    // TODO: Check if Book is Still in Stock
     const bookIds = req.body.book_ids;
     const userId = req.user.id;
     const bookTitles = [];
@@ -69,15 +70,41 @@ const userController = {
       bookTitles.push(bookTitle);
       await databaseService.deleteBookFromCart(userId, bookId);
       await databaseService.addBookToOrders(userId, bookId);
+      await databaseService.reduceBookAmount(bookId);
     });
 
     await databaseService.addLog({
       event: "Add",
       object: "Orders",
-      description: `User "${req.user.email}" Added Books "${bookTitles}" to their Orders`,
+      description: `User "${req.user.email}" Removed Books "${bookTitles}" from their Cart and Added them to their Orders`,
       createdBy: req.user.email,
     });
     return res.json({ message: "Orders Added" });
+  },
+
+  addSales: async (req, res) => {
+    // Protect Route
+    const bookIds = req.body.book_ids;
+    const userId = req.body.user_id;
+    const userEmail = (await databaseService.fetchUsersBy("id", userId))[0]
+      .email;
+    const bookTitles = [];
+
+    bookIds.foreach(async (bookId) => {
+      const bookTitle = (await databaseService.fetchBooksBy("id", bookId))[0]
+        .title;
+      bookTitles.push(bookTitle);
+      await databaseService.deleteBookFromOrders(userId, bookId);
+      await databaseService.addBookToSales(userEmail, bookId);
+    });
+
+    await databaseService.addLog({
+      event: "Add",
+      object: "Sales",
+      description: `User "${req.user.email}" Removed Books "${bookTitles}" from their Orders and Added them to their Sales`,
+      createdBy: req.user.email,
+    });
+    return res.json({ message: "Sales Added" });
   },
 
   addBookReview: async (req, res) => {
