@@ -5,7 +5,7 @@ const openLibraryService = {
       author: author,
       title: title,
       limit: 5,
-      fields: "title,author_name,cover_i, publish_year",
+      fields: "title,author_name,cover_i, publish_year, isbn",
     }).toString();
     const bookData = await fetch(`${url}?${params}`);
     return await bookData.json();

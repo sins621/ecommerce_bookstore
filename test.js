@@ -1,4 +1,5 @@
-import databaseService from "./services/databaseService.js";
+// import databaseService from "./services/databaseService.js";
+import openLibraryService from "./services/openLibraryService.js";
 
 // const result = await databaseService.addSubscriber("felix@felix.com");
 // console.log(result);
@@ -50,6 +51,5 @@ import databaseService from "./services/databaseService.js";
 
 // await databaseService.reduceBookAmount(11);
 
-const result = await databaseService.fetchAllOrdersItems();
-console.log(result);
+console.log(await openLibraryService.fetchBookDetails("JK Rowling", "The Philosopher Stone"))
 process.exit();
