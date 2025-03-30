@@ -19,34 +19,22 @@ const userController = {
   },
 
   fetchCartItems: async (req, res) => {
-    try {
-      const userId = req.user.id;
-      const cartItems = await databaseService.fetchCartItems(userId);
-      if (cartItems.length === 0) res.status(500);
-      return res.json({ cart: cartItems });
-    } catch (err) {
-      console.log(err);
-    }
+    const userId = req.user.id;
+    const cartItems = await databaseService.fetchCartItems(userId);
+    if (cartItems.length === 0) res.status(500);
+    return res.json({ cart: cartItems });
   },
 
   fetchAllOrdersItems: async (req, res) => {
-    try {
-      const ordersItems = await databaseService.fetchAllOrdersItems();
-      if (ordersItems.length === 0) res.status(500);
-      return res.json({ orders: ordersItems });
-    } catch (err) {
-      console.log(err);
-    }
+    const ordersItems = await databaseService.fetchAllOrdersItems();
+    if (ordersItems.length === 0) res.status(500);
+    return res.json({ orders: ordersItems });
   },
 
   fetchAllSalesItems: async (req, res) => {
-    try {
-      const salesItems = await databaseService.fetchAllSalesItems();
-      if (salesItems.length === 0) res.status(500);
-      return res.json({ sales: salesItems });
-    } catch (err) {
-      console.log(err);
-    }
+    const salesItems = await databaseService.fetchAllSalesItems();
+    if (salesItems.length === 0) res.status(500);
+    return res.json({ sales: salesItems });
   },
 
   fetchAllRoles: async (req, res) => {

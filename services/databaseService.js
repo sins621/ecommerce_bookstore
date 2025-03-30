@@ -1,7 +1,7 @@
 import pg from "pg";
 import "dotenv/config";
 
-const CLIENT_INFO = {
+const clientInfo = {
   user: "postgres",
   host: process.env.DB_HOST,
   database: "book_website",
@@ -9,7 +9,7 @@ const CLIENT_INFO = {
   port: 5432,
 };
 
-const database = new pg.Client(CLIENT_INFO);
+const database = new pg.Client(clientInfo);
 database.connect();
 
 const databaseService = {
@@ -70,33 +70,55 @@ const databaseService = {
     const query = await database.query(
       `
       SELECT
-        user_id,
-        string_agg(book_id::TEXT, ',') AS book_ids,
-        string_agg(book_title, ',') AS book_titles
+        o.user_id,
+        u.email,
+        STRING_AGG(o.book_id::TEXT, ',') AS book_ids,
+        STRING_AGG(o.book_title, ',') AS book_titles,
+        o.ordered_on
       FROM
-        orders
+        orders o
+      JOIN
+        users u 
+      ON
+        o.user_id = u.id
       GROUP BY
-        user_id;
+        o.user_id, u.email, o.ordered_on;
       `
     );
 
     return query.rows.map((order) => {
       return {
         user_id: order.user_id,
+        user_email: order.email,
         book_ids: order.book_ids.split(","),
-        book_titles: order.book_titles.split(','),
-      }
-    })
+        book_titles: order.book_titles.split(","),
+        ordered_on: order.ordered_on,
+      };
+    });
   },
 
   fetchAllSalesItems: async () => {
-    return (
-      await database.query(
-        `
-        SELECT * FROM sales
-        `
-      )
-    ).rows;
+    const query = await database.query(
+      `
+      SELECT
+        buyer_email,
+        STRING_AGG(book_title, ',') AS book_titles,
+        sold_on
+      FROM
+        sales
+      GROUP BY
+        buyer_email,
+        sold_on;
+      `
+    );
+
+    return query.rows.map((sale) => {
+      return {
+        buyer_email: sale.buyer_email,
+        book_titles: sale.book_titles.split(","),
+        sold_on: sale.sold_on,
+      };
+    });
   },
 
   fetchUsersBy: async (filter, value) => {
@@ -332,9 +354,10 @@ const databaseService = {
           user_id,
           book_title,
           book_price,
-          amount
+          amount,
+          ordered_on
         )
-        VALUES ($1, $2, $3, $4, $5)
+        VALUES ($1, $2, $3, $4, $5, now())
         ON CONFLICT (book_id, user_id)
         DO UPDATE SET amount = public.orders.amount + 1
         RETURNING *;
@@ -374,8 +397,8 @@ const databaseService = {
       )
     ).rows[0];
 
-    const USER_ROLE_ID = 2;
-    const USER_ROLE_NAME = "user";
+    const userRoleId = 2;
+    const userRoleName = "user";
     var roleTableUser = (
       await database.query(
         `
@@ -383,7 +406,7 @@ const databaseService = {
         VALUES ($1, $2, $3, $4)
         RETURNING *
         `,
-        [userTableUser.id, USER_ROLE_ID, email, USER_ROLE_NAME]
+        [userTableUser.id, userRoleId, email, userRoleName]
       )
     ).rows[0];
 

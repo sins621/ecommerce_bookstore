@@ -1,3 +1,27 @@
+<% if (locals.orders.length > 0) { %>
 <table class="orders-table">
-
+  <tr>
+    <th>email</th>
+    <th>books</th>
+    <th>date</th>
+    <th>actions</th>
+  </tr>
+  <% orders.forEach((order) => { %>
+  <tr>
+    <td><%= order.user_email %></td>
+    <td>
+      <% order.book_titles.forEach((book_title) => { %>
+        <p><%= book_title %></p>
+      <% }); %>
+    </td>
+    <td><%= order.ordered_on %></td>
+    <td>
+      <button>Mark as Sold</button>
+      <button>Cancel Order</button>
+    </td>
+    <% }); %>
+  </tr>
 </table>
+<% } else { %>
+<p>No Orders to Show</p>
+<% } %>
