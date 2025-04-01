@@ -13,6 +13,8 @@ const database = new pg.Client(clientInfo);
 database.connect();
 
 const databaseService = {
+  query: database.query,
+
   fetchAllBooks: async () => {
     return (await database.query("SELECT * FROM books")).rows;
   },
