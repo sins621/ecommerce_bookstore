@@ -1,10 +1,15 @@
 import databaseService from "../services/databaseService.js";
 import bcrypt from "bcrypt";
+import express from "express";
 
 const SALT_ROUNDS = 10;
 
 const viewController = {
-  home: async (req, res) => {
+  home: async (
+    req: express.Request,
+    res: express.Response,
+    user: Express.User
+  ) => {
     const books = await databaseService.fetchAllBooks();
     const categories = await databaseService.fetchCategories();
 
@@ -18,7 +23,7 @@ const viewController = {
         user: req.user,
       });
 
-    const cart = await databaseService.fetchCartItems(req.user.id);
+    const cart = await databaseService.fetchCartItems(user.id);
 
     return res.render("routes/index.ejs", {
       books,
@@ -28,8 +33,8 @@ const viewController = {
     });
   },
 
-  book: async (req, res) => {
-    const bookId = req.params.id;
+  book: async (req: express.Request, res: express.Response) => {
+    const bookId = Number(req.params.id);
     const books = await databaseService.fetchBooksBy("id", bookId);
     const reviews = await databaseService.fetchBookReviews(bookId);
 
@@ -53,20 +58,24 @@ const viewController = {
     });
   },
 
-  cart: async (req, res) => {
-    const cart = await databaseService.fetchCartItems(req.user.id);
+  cart: async (
+    req: express.Request,
+    res: express.Response,
+    user: Express.User
+  ) => {
+    const cart = await databaseService.fetchCartItems(user.id);
     return res.render("routes/cart.ejs", {
       cart,
-      user: req.user.id,
+      user: user.id,
     });
   },
 
-  addBook: (req, res) => {
+  addBook: (req: express.Request, res: express.Response) => {
     // if (!req.isAuthenticated() || req.user.role != "admin") return res.redirect("/login");
     return res.render("routes/add_book.ejs");
   },
 
-  admin: async (req, res) => {
+  admin: async (req: express.Request, res: express.Response) => {
     const users = await databaseService.fetchAllUsersRoles();
     const roles = await databaseService.fetchAllRoles();
     const orders = await databaseService.fetchAllOrdersItems();
@@ -80,17 +89,17 @@ const viewController = {
     });
   },
 
-  loginForm: (req, res) => {
+  loginForm: (req: express.Request, res: express.Response) => {
     if (req.isAuthenticated()) return res.redirect("/");
     return res.render("routes/login.ejs");
   },
 
-  registerForm: (req, res) => {
+  registerForm: (req: express.Request, res: express.Response) => {
     if (req.isAuthenticated()) return res.redirect("/");
     return res.render("routes/register.ejs");
   },
 
-  register: async (req, res) => {
+  register: async (req: express.Request, res: express.Response) => {
     if (!req.body) return res.send("Server Error").status(500);
     const email = req.body.username;
     const password = req.body.password;
@@ -114,7 +123,11 @@ const viewController = {
     });
   },
 
-  logout: (req, res) => {
+  logout: (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
     req.logout((err) => {
       if (err) return next(err);
 
@@ -122,7 +135,7 @@ const viewController = {
     });
   },
 
-  test: (req, res) => {
+  test: (req: express.Request, res: express.Response) => {
     res.render("routes/test.ejs");
   },
 };

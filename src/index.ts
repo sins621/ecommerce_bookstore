@@ -17,7 +17,6 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = 6199;
-const saltRounds = 10;
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
@@ -79,7 +78,7 @@ passport.serializeUser((user, callback) => {
 });
 
 passport.deserializeUser((user, callback) => {
-  callback(null, user as User);
+  callback(null, user as Express.User);
 });
 
 app.use("/users", userRoutes);

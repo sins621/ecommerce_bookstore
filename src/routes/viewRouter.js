@@ -1,7 +1,7 @@
 import express from "express";
 import viewController from "../controllers/viewController.js";
 import passport from "passport";
-
+import validator from "../middleware/validator.ts";
 
 const router = express.Router();
 
@@ -25,6 +25,5 @@ router.get("/logout", viewController.logout);
 
 router.get("/register", viewController.registerForm);
 router.post("/register", viewController.register);
-
 
 export default router;

@@ -1,5 +1,7 @@
-interface User {
+declare namespace Express {
+  interface User {
     id: number;
     email: string;
     role: string;
+  }
 }
