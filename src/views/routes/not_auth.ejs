@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head') %>
+</head>
+
+<body>
+  <% if (locals.user) { %>
+  <%- include('../partials/header', {user: user, cart: cart}) %>
+  <% } else { %>
+  <%- include('../partials/header') %>
+  <% } %>
+  <hr>
+  <main>
+    <h1>Authentication Error</h1>
+    <p>You must be logged in to view this content.</p>
+  </main>
+  <%- include('../partials/footer') %>
+</body>
+<script src="scripts/scripts.js"></script>
+
+</html>

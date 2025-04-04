@@ -5,9 +5,9 @@ import validator from "../middleware/validator.ts";
 
 const router = express.Router();
 
-router.get("/", viewController.home);
+router.get("/", validator.validateView, viewController.home);
 router.get("/test", viewController.test);
-router.get("/cart", validator.validateUser, viewController.cart);
+router.get("/cart", validator.validateView, viewController.cart);
 router.get("/admin", viewController.admin);
 router.get("/book/:id", viewController.book);
 router.get("/add-book", viewController.addBook);
@@ -21,7 +21,7 @@ router.post(
     failureFlash: true,
   })
 );
-router.get("/logout", validator.validateUser, viewController.logout);
+router.get("/logout", validator.validateView, viewController.logout);
 
 router.get("/register", viewController.registerForm);
 router.post("/register", viewController.register);
