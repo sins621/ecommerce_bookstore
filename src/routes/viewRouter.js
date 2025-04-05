@@ -5,7 +5,7 @@ import validator from "../middleware/validator.ts";
 
 const router = express.Router();
 
-router.get("/", validator.validateView, viewController.home);
+router.get("/", viewController.home);
 router.get("/test", viewController.test);
 router.get("/cart", validator.validateView, viewController.cart);
 router.get("/admin", viewController.admin);
