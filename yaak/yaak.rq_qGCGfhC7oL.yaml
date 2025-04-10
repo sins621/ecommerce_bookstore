@@ -1,0 +1,38 @@
+type: http_request
+model: http_request
+id: rq_qGCGfhC7oL
+createdAt: 2025-04-09T13:58:56.838320530
+updatedAt: 2025-04-09T13:59:19.092416715
+workspaceId: wk_HdpjNjtjjJ
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: OL No Result
+sortPriority: -1743085200000.0
+url: https://openlibrary.org/search.json
+urlParameters:
+- enabled: true
+  name: author
+  value: '""'
+  id: baWsvd0qdM
+- enabled: true
+  name: title
+  value: '""'
+  id: h6npuggaVG
+- enabled: true
+  name: limit
+  value: '5'
+  id: rSk9DXkwsU
+- enabled: true
+  name: fields
+  value: title,author_name,cover_i,publish_year,isbn
+  id: rquNaDbfKb
+- enabled: true
+  name: ''
+  value: ''
+  id: 8IeNMhqy6j

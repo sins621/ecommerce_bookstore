@@ -29,7 +29,7 @@ app.use(morgan("tiny"));
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET!,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })
@@ -78,7 +78,7 @@ passport.serializeUser((user, callback) => {
 });
 
 passport.deserializeUser((user, callback) => {
-  callback(null, user as Express.User);
+  callback(null, user);
 });
 
 app.use("/users", userRoutes);

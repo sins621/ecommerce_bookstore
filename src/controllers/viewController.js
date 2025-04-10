@@ -5,11 +5,7 @@ import express from "express";
 const SALT_ROUNDS = 10;
 
 const viewController = {
-  home: async (
-    req: express.Request,
-    res: express.Response,
-    user: Express.User
-  ) => {
+  home: async (req, res, user) => {
     const books = await databaseService.fetchAllBooks();
     const categories = await databaseService.fetchCategories();
 
@@ -33,7 +29,7 @@ const viewController = {
     });
   },
 
-  book: async (req: express.Request, res: express.Response) => {
+  book: async (req, res) => {
     const bookId = Number(req.params.id);
     const books = await databaseService.fetchBooksBy("id", bookId);
     const reviews = await databaseService.fetchBookReviews(bookId);
@@ -58,11 +54,7 @@ const viewController = {
     });
   },
 
-  cart: async (
-    req: express.Request,
-    res: express.Response,
-    user: Express.User
-  ) => {
+  cart: async (req, res, user) => {
     const cart = await databaseService.fetchCartItems(user.id);
     return res.render("routes/cart.ejs", {
       cart,
@@ -70,12 +62,12 @@ const viewController = {
     });
   },
 
-  addBook: (req: express.Request, res: express.Response) => {
+  addBook: (req, res) => {
     // if (!req.isAuthenticated() || req.user.role != "admin") return res.redirect("/login");
     return res.render("routes/add_book.ejs");
   },
 
-  admin: async (req: express.Request, res: express.Response) => {
+  admin: async (req, res) => {
     const users = await databaseService.fetchAllUsersRoles();
     const roles = await databaseService.fetchAllRoles();
     const orders = await databaseService.fetchAllOrdersItems();
@@ -89,17 +81,17 @@ const viewController = {
     });
   },
 
-  loginForm: (req: express.Request, res: express.Response) => {
+  loginForm: (req, res) => {
     if (req.isAuthenticated()) return res.redirect("/");
     return res.render("routes/login.ejs");
   },
 
-  registerForm: (req: express.Request, res: express.Response) => {
+  registerForm: (req, res) => {
     if (req.isAuthenticated()) return res.redirect("/");
     return res.render("routes/register.ejs");
   },
 
-  register: async (req: express.Request, res: express.Response) => {
+  register: async (req, res) => {
     if (!req.body) return res.send("Server Error").status(500);
     const email = req.body.username;
     const password = req.body.password;
@@ -123,11 +115,7 @@ const viewController = {
     });
   },
 
-  logout: (
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
+  logout: (req, res, next) => {
     req.logout((err) => {
       if (err) return next(err);
 
@@ -135,7 +123,7 @@ const viewController = {
     });
   },
 
-  test: (req: express.Request, res: express.Response) => {
+  test: (req, res) => {
     res.render("routes/test.ejs");
   },
 };

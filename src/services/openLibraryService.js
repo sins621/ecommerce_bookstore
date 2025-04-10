@@ -4,8 +4,8 @@ const openLibraryService = {
     const params = new URLSearchParams({
       author: author,
       title: title,
-      limit: 5,
       fields: "title,author_name,cover_i, publish_year, isbn",
+      limit: 5,
     }).toString();
     const bookData = await fetch(`${url}?${params}`);
     return await bookData.json();

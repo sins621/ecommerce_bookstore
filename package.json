@@ -4,9 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "nodemon --exec tsx src/index.ts"
+    "dev": "nodemon src/index.js",
+    "test": "vitest"
   },
   "author": "",
   "license": "ISC",
@@ -14,11 +13,9 @@
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "@inquirer/prompts": "^7.3.1",
-    "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
-    "ejs-lint": "^2.0.1",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "morgan": "^1.10.0",
@@ -28,16 +25,7 @@
     "pg": "^8.13.3"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "@types/express": "^5.0.1",
-    "@types/express-session": "^1.18.1",
-    "@types/morgan": "^1.9.9",
-    "@types/node": "^22.13.16",
-    "@types/passport": "^1.0.17",
-    "@types/passport-local": "^1.0.38",
-    "@types/pg": "^8.11.11",
     "nodemon": "^3.1.9",
-    "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
+    "vitest": "^3.1.1"
   }
 }

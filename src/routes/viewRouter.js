@@ -1,7 +1,7 @@
 import express from "express";
 import viewController from "../controllers/viewController.js";
 import passport from "passport";
-import validator from "../middleware/validator.ts";
+import validator from "../middleware/validator.js";
 
 const router = express.Router();
 

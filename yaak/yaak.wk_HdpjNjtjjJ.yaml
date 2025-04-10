@@ -1,0 +1,10 @@
+type: workspace
+model: workspace
+id: wk_HdpjNjtjjJ
+createdAt: 2025-03-27T14:19:37.612186374
+updatedAt: 2025-04-09T13:57:31
+name: Yaak-APis
+description: ''
+settingValidateCertificates: true
+settingFollowRedirects: true
+settingRequestTimeout: 0

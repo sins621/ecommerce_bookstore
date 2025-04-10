@@ -1,0 +1,38 @@
+type: http_request
+model: http_request
+id: rq_gEUQppmbVv
+createdAt: 2025-04-09T13:59:30.372132794
+updatedAt: 2025-04-09T14:04:32.380359179
+workspaceId: wk_HdpjNjtjjJ
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: OL No Image
+sortPriority: -1743085200000.0
+url: https://openlibrary.org/search.json
+urlParameters:
+- enabled: true
+  name: author
+  value: Tana French
+  id: baWsvd0qdM
+- enabled: true
+  name: title
+  value: In the Woods
+  id: h6npuggaVG
+- enabled: true
+  name: limit
+  value: '5'
+  id: rSk9DXkwsU
+- enabled: true
+  name: fields
+  value: title,author_name,cover_i,publish_year,isbn
+  id: rquNaDbfKb
+- enabled: true
+  name: ''
+  value: ''
+  id: 7pYhtwYFvx

@@ -1,0 +1,38 @@
+type: http_request
+model: http_request
+id: rq_BdNSTBueke
+createdAt: 2025-03-27T14:21:33.542413438
+updatedAt: 2025-04-09T14:26:49.382880056
+workspaceId: wk_HdpjNjtjjJ
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: OL OK
+sortPriority: -1743085200000.0
+url: https://openlibrary.org/search.json
+urlParameters:
+- enabled: true
+  name: author
+  value: '"JK Rowling"'
+  id: baWsvd0qdM
+- enabled: true
+  name: title
+  value: '"Harry Potter"'
+  id: h6npuggaVG
+- enabled: true
+  name: fields
+  value: title,author_name,cover_i,publish_year,isbn
+  id: rquNaDbfKb
+- enabled: true
+  name: limit
+  value: '5'
+  id: cs7XneKM89
+- enabled: true
+  name: ''
+  value: ''
+  id: ARa0YEItgk
