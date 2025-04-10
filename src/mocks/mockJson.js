@@ -1,5 +1,5 @@
-export const mockJson = {
-  openLibraryGoodSearch: {
+export const openLibraryMock = {
+  GoodSearch: {
     numFound: 252,
     start: 0,
     numFoundExact: true,
@@ -2050,7 +2050,7 @@ export const mockJson = {
       },
     ],
   },
-  openLibraryEmptySearch: {
+  EmptySearch: {
     numFound: 0,
     start: 0,
     numFoundExact: true,
@@ -2060,7 +2060,7 @@ export const mockJson = {
     offset: null,
     docs: [],
   },
-  openLibraryNoImage: {
+  NoImage: {
     numFound: 4,
     start: 0,
     numFoundExact: true,

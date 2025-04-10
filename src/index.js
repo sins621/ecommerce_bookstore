@@ -9,6 +9,8 @@ import databaseService from "./services/databaseService.js";
 import userRoutes from "./routes/userRouter.js";
 import bookRoutes from "./routes/bookRouter.js";
 import viewRoutes from "./routes/viewRouter.js";
+import devRoutes from "./routes/devRouter.js";
+
 import { fileURLToPath } from "url";
 import "dotenv/config";
 
@@ -81,9 +83,10 @@ passport.deserializeUser((user, callback) => {
   callback(null, user);
 });
 
+app.use("/", viewRoutes);
 app.use("/users", userRoutes);
 app.use("/books", bookRoutes);
-app.use("/", viewRoutes);
+app.use("/dev", devRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
