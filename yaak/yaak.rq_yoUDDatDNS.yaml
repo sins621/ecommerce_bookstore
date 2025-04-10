@@ -1,0 +1,30 @@
+type: http_request
+model: http_request
+id: rq_yoUDDatDNS
+createdAt: 2025-04-10T17:07:41.973516700
+updatedAt: 2025-04-10T17:09:08.255265100
+workspaceId: wk_HdpjNjtjjJ
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: ''
+sortPriority: -1743085200000.0
+url: http://localhost:6199/books/details
+urlParameters:
+- enabled: true
+  name: author
+  value: JK Rowling
+  id: 0jTGUh7Rw6
+- enabled: true
+  name: title
+  value: Harry Potter
+  id: XNEDyT5tyi
+- enabled: true
+  name: ''
+  value: ''
+  id: xZpccxDp2F

@@ -24,7 +24,6 @@ async function createBookForm(event) {
   }
 
   const bookSelect = createBookSelect(bookData);
-  const selectedBookData = JSON.parse(bookSelect.value);
   form.appendChild(bookSelect);
 
   const abstractTextArea = createAbstractTextArea(bookData);
@@ -38,8 +37,10 @@ async function createBookForm(event) {
   form.appendChild(generateAbstractButton);
 
   generateAbstractButton.addEventListener("click", async () => {
-    const author = selectedBookData.author_name[0];
-    const title = selectedBookData.title;
+    const selectedValue = bookSelect.value;
+    const currentSelectedBookData = JSON.parse(selectedValue);
+    const author = currentSelectedBookData.author_name[0];
+    const title = currentSelectedBookData.title;
     abstractTextArea.textContent = await generateAbstract(author, title);
   });
 
@@ -65,6 +66,8 @@ async function createBookForm(event) {
   form.appendChild(submitBookButton);
 
   submitBookButton.addEventListener("click", async () => {
+    const selectedValue = bookSelect.value;
+    const currentSelectedBookData = JSON.parse(selectedValue);
     await fetch("/books/add", {
       method: "POST",
       headers: {
@@ -72,23 +75,36 @@ async function createBookForm(event) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: selectedBookData.title,
-        author: selectedBookData.author_name[0],
+        title: currentSelectedBookData.title,
+        author: currentSelectedBookData.author_name[0],
         category: categorySelect.value,
-        publish_year: selectedBookData.publish_year[0],
+        publish_year: currentSelectedBookData.publish_year[0],
         abstract: abstractTextArea.value,
-        cover_id: selectedBookData.cover_i,
+        cover_id: currentSelectedBookData.cover_i,
         quantity: quantityInput.value,
         price: priceInput.value,
+        isbn: currentSelectedBookData.isbn,
       }),
     });
   });
+
+  const bookImage = document.createElement("img");
+  bookImage.height = 200;
+  const selectedValue = bookSelect.value;
+  const currentSelectedBookData = JSON.parse(selectedValue);
+  bookImage.src = currentSelectedBookData.cover_i;
+  bookSelect.addEventListener("change", () => {
+    const selectedValue = bookSelect.value;
+    const currentSelectedBookData = JSON.parse(selectedValue);
+    bookImage.src = currentSelectedBookData.cover_i;
+  });
+  form.appendChild(bookImage);
 }
 
 function createBookSelect(bookData) {
   const bookSelect = document.createElement("select");
   bookSelect.name = "book";
-  bookData.docs.forEach((book) => {
+  bookData.forEach((book) => {
     addBookOption(bookSelect, book);
   });
   return bookSelect;

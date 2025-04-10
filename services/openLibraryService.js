@@ -25,6 +25,11 @@ const openLibraryService = {
         return "cover_i" in book;
       });
 
+      bookData.docs = bookData.docs.map((book) => {
+        book.cover_i = `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`
+        return book;
+      })
+
       if (bookData.docs.length === 0) {
         console.error(
           `No books were found for query author: ${author} title: ${title}`

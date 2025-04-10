@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = 6199;
 
-app.use(express.static("src/public"));
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

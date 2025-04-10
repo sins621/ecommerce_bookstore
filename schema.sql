@@ -45,7 +45,6 @@ CREATE TABLE books (
     book_id SERIAL PRIMARY KEY,
     title TEXT,
     author TEXT,
-    publisher VARCHAR(255),
     publish_year SMALLINT,
     abstract TEXT,
     cover TEXT,

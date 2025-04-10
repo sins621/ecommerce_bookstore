@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.782.0",
+    "@aws-sdk/s3-request-presigner": "^3.782.0",
     "@google/generative-ai": "^0.21.0",
     "@inquirer/prompts": "^7.3.1",
     "bcrypt": "^5.1.1",

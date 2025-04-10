@@ -282,7 +282,6 @@ const databaseService = {
         (
           title,
           author,
-          category,
           publish_year,
           abstract,
           cover_id,

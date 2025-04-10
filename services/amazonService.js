@@ -1,4 +1,9 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import "dotenv/config";
 
 const bucketRegion = process.env.AWS_BUCKET_REGION;
@@ -32,25 +37,25 @@ const amazonService = {
       return "";
     }
   },
+
+  getImageUrl: async (info) => {
+    const GetObjectParams = {
+      Bucket: info.bucket,
+      Key: info.name,
+    };
+    const command = new GetObjectCommand(GetObjectParams);
+    const url = await getSignedUrl(amazonService.s3, command, {
+      expiresIn: 3600,
+    });
+    return url;
+  },
 };
 
-async function test() {
-  const imageUrl =
-    "https://ia800505.us.archive.org/view_archive.php?archive=/2/items/olcovers147/olcovers147-L.zip&file=1474730-L.jpg";
-  const response = await fetch(imageUrl);
-
-  if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
-
-  const arrayBuffer = await response.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-
-  amazonService.uploadImage({
-    bucket: "process.env.AWS_BUCKET_NAME",
-    name: "Test2",
-    buffer: buffer,
-  });
-}
-
-test();
+console.log(
+  await amazonService.getImageUrl({
+    bucket: "sins-ecommerce-app",
+    name: "22430d0a72634a2272331b3a6c4f28638049ce3d9799bec436b5e5f106fde316",
+  })
+);
 
 export default amazonService;
