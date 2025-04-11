@@ -51,11 +51,4 @@ const amazonService = {
   },
 };
 
-console.log(
-  await amazonService.getImageUrl({
-    bucket: "sins-ecommerce-app",
-    name: "22430d0a72634a2272331b3a6c4f28638049ce3d9799bec436b5e5f106fde316",
-  })
-);
-
 export default amazonService;

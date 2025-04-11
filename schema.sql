@@ -57,9 +57,15 @@ CREATE TABLE books (
 CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(255) UNIQUE,
-    image_link VARCHAR(255),
     deleted_at TIMESTAMP WITH TIME ZONE
 );
+
+CREATE TABLE categories_images (
+    image_id SERIAL PRIMARY KEY,
+    category_id INTEGER REFERENCES categories(category_id),
+    image_link VARCHAR(255),
+    deleted_at TIMESTAMP WITH TIME ZONE
+)
 
 CREATE TABLE books_categories (
     book_id INTEGER REFERENCES books(book_id),

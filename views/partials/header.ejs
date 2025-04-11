@@ -1,33 +1,22 @@
 <header>
-  <div class="header">
-    <div class="header-logo">
-      <a href="/">
-        <img src="/img/logo/Logo_Cropped.png" alt="Company Logo">
+  <div id="header">
+    <div class="header menu">
+      <a href="">
+        <img src="   https://cdn-icons-png.flaticon.com/512/2976/2976215.png "
+            alt="">
       </a>
     </div>
-    <div class="title">
+    <div class="header logo">
       <a href="/">
-        <h1>Knowl & Tree Bookstore</h1>
+        <img src="/img/logo/Logo_No_BG.png" alt="Company Logo">
       </a>
     </div>
-    <div class="nav">
-      <nav>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-        <% if (locals.user) { %>
-        <% if (user.role === "admin") { %>
-        <a href="/add-book">Add</a>
-        <% } else { %>
-        <% } %>
-        <a href="/cart">Cart</a>
-        <p id="cart-size"><%= cart.length %></p>
-        <a href="/logout">Logout</a>
-        <a href="/admin">Admin</a>
-        <% } else { %>
-        <a href="/register">Register</a>
-        <a href="/login">Login</a>
-        <% } %>
-      </nav>
+    <div class="header options">
+      <a class="header search" href=""><img src="/img/icons/search.png"
+            alt="Search Icon"></a>
+      <a class="header cart" href="">
+        <img src="/img/icons/shopping-cart.png" alt="Shopping Cart Icon">
+      </a>
     </div>
   </div>
 </header>

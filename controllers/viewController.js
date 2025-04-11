@@ -7,25 +7,8 @@ const SALT_ROUNDS = 10;
 const viewController = {
   home: async (req, res, user) => {
     const books = await databaseService.fetchAllBooks();
-    const categories = await databaseService.fetchCategories();
-
-    if (books.length === 0)
-      return res.send("Error Retrieving Books").status(500);
-
-    if (!req.isAuthenticated())
-      return res.render("routes/index.ejs", {
-        books,
-        categories,
-        user: req.user,
-      });
-
-    const cart = await databaseService.fetchCartItems(user.id);
-
     return res.render("routes/index.ejs", {
       books,
-      categories,
-      user: req.user,
-      cart,
     });
   },
 
