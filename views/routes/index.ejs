@@ -16,7 +16,7 @@
       <div class="category image-container">
         <img src="<%= category.image_link %>" alt="<%= category.name %> Image">
       </div>
-      <h3 class="pt-serif-regular category title"><%= category.name %></h3>
+      <h3 class="pt-sans-regular category title"><%= category.name %></h3>
     </div>
     <% }); %>
   </div>
@@ -25,6 +25,29 @@
     <img src="<%= advert.image_link %>" alt="<%= advert.description %>">
     <% }); %>
   </div>
+  <% locals.categories && categories.forEach(category => { %>
+  <h2 class="header pt-serif-bold" id="genre-title">
+    <%= category.name %>
+  </h2>
+  <div class="books scroll">
+    <% locals.books && books.forEach(book => { %>
+    <% if (book.name === category.name) { %>
+    <div class="books card container">
+      <div class="books cover container">
+        <img src="<%= book.cover_link %>" alt="<%= book.title %> Cover Image">
+      </div>
+      <h5 class="pt-sans-regular"><%= book.author %></h5>
+      <h4 class="pt-sans-bold"><%= book.title %></h4>
+      <div class="text container">
+        <h6 class="pt-sans-regular">R<%= Number(book.price).toFixed(2) %></h6>
+        <p>*****</p>
+      </div>
+    </div>
+    <% } %>
+    <% }); %>
+  </div>
+  <% }); %>
+
 </body>
 
 </html>

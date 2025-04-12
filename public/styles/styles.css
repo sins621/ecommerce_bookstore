@@ -34,6 +34,30 @@ Palette
   font-style: italic;
 }
 
+.pt-sans-regular {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pt-sans-bold {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.pt-sans-regular-italic {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.pt-sans-bold-italic {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
 #header {
   display: flex;
   justify-content: space-between;
@@ -113,6 +137,57 @@ Palette
   width: auto;
   max-width: 100%;
   min-width: none;
+}
+
+.books.card.container {
+  height: 300px;
+  width: 250px;
+  min-width: 250px;
+  margin: 0px 10px;
+}
+
+.cover.container {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+  max-width: 100%;
+  margin-bottom: 10px;
+}
+
+.books.cover img {
+  height: 80%;
+  width: 35%;
+  border-radius: 10px;
+}
+
+.books h5 {
+  color: rgba(0, 0, 0, 0.7);
+  margin-bottom: 5px;
+}
+
+.books h4 {
+  color: #102e50;
+  text-wrap: wrap;
+  margin-bottom: 5px;
+}
+
+.text.container h6 {
+  color: #be3d2a;
+}
+
+.text.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.books.scroll {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px;
 }
 
 @media (min-width: 650px) {

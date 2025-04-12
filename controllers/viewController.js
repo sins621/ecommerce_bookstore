@@ -8,7 +8,24 @@ const SALT_ROUNDS = 10;
 
 const viewController = {
   home: async (req, res, user) => {
-    const books = await databaseService.fetchAllBooks();
+    const books = (
+      await databaseService.query(
+        `
+        SELECT books.book_id, books.title, books.author, books.price, books.cover_hex, categories.name
+          FROM books_categories
+        LEFT OUTER JOIN books
+          ON books_categories.book_id = books.book_id
+        LEFT OUTER JOIN categories
+          ON books_categories.category_id = categories.category_id
+        `
+      )
+    ).rows;
+    for (let i = 0; i < books.length; i++) {
+      books[i].cover_link = await amazonService.getImageUrl({
+        bucket: process.env.AWS_BUCKET_NAME,
+        name: books[i].cover_hex,
+      });
+    }
     const categories = (
       await databaseService.query(
         `
