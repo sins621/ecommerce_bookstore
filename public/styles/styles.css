@@ -1,3 +1,10 @@
+/*
+Palette
+#102E50 = Navy
+#F5C45E = Yellow
+#E78B48 = Orange
+#BE3D2A = Red
+*/
 * {
   margin: 0px;
   padding: 0px;
@@ -63,6 +70,49 @@
 
 #genre-title {
   margin: 10px 10px;
+}
+
+.category.container {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px;
+}
+
+.category .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.category .image-container {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.category .image-container img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.category .title {
+  font-size: smaller;
+  width: 80px;
+  text-wrap: wrap;
+  text-align: center;
+  margin: 0;
+}
+
+.advert.top > img {
+  width: auto;
+  max-width: 100%;
+  min-width: none;
 }
 
 @media (min-width: 650px) {

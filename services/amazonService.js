@@ -47,6 +47,7 @@ const amazonService = {
     const url = await getSignedUrl(amazonService.s3, command, {
       expiresIn: 3600,
     });
+    console.log(url);
     return url;
   },
 };

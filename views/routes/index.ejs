@@ -10,9 +10,21 @@
   <h2 class="header pt-serif-bold" id="genre-title">
     Genres
   </h2>
-  <% for( let i = 0; i < 3; i++ ) { %>
-    
-  <% } %>
+  <div class="category container">
+    <% locals.categories && categories.forEach(category => { %>
+    <div class="category card">
+      <div class="category image-container">
+        <img src="<%= category.image_link %>" alt="<%= category.name %> Image">
+      </div>
+      <h3 class="pt-serif-regular category title"><%= category.name %></h3>
+    </div>
+    <% }); %>
+  </div>
+  <div class="advert top">
+    <% locals.adverts && adverts.forEach(advert => { %>
+    <img src="<%= advert.image_link %>" alt="<%= advert.description %>">
+    <% }); %>
+  </div>
 </body>
 
 </html>

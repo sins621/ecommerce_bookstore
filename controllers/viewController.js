@@ -1,14 +1,48 @@
 import databaseService from "../services/databaseService.js";
 import bcrypt from "bcrypt";
 import express from "express";
+import amazonService from "../services/amazonService.js";
+import "dotenv/config";
 
 const SALT_ROUNDS = 10;
 
 const viewController = {
   home: async (req, res, user) => {
     const books = await databaseService.fetchAllBooks();
+    const categories = (
+      await databaseService.query(
+        `
+        SELECT categories.name, categories_images.image_hex 
+        FROM categories
+        INNER JOIN categories_images 
+        ON categories.category_id = categories_images.category_id
+        `
+      )
+    ).rows;
+    for (let i = 0; i < categories.length; i++) {
+      categories[i].image_link = await amazonService.getImageUrl({
+        bucket: process.env.AWS_BUCKET_NAME,
+        name: categories[i].image_hex,
+      });
+    }
+    const adverts = (
+      await databaseService.query(
+        `
+        SELECT * FROM public.adverts
+        ORDER BY advert_id ASC 
+        `
+      )
+    ).rows;
+    for (let i = 0; i < adverts.length; i++) {
+      adverts[i].image_link = await amazonService.getImageUrl({
+        bucket: process.env.AWS_BUCKET_NAME,
+        name: adverts[i].image_hex,
+      });
+    }
     return res.render("routes/index.ejs", {
       books,
+      categories,
+      adverts,
     });
   },
 
