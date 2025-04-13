@@ -68,7 +68,7 @@ const bookController = {
       author,
       publish_year,
       abstract,
-      cover,
+      cover_hex,
       quantity,
       price,
       isbn

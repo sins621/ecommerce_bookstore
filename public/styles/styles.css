@@ -80,9 +80,15 @@ Palette
   box-shadow: 0 5px 5px var(--shadow-grey);
 }
 
-.menu img {
+.menu.header {
   height: 25px;
   width: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.menu img {
+  width: 30px;
 }
 
 .logo img {
