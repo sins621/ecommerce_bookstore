@@ -10,6 +10,7 @@
   <h2 class="header pt-serif-bold" id="genre-title">
     Genres
   </h2>
+
   <div class="category container">
     <% locals.categories && categories.forEach(category => { %>
     <div class="category card">
@@ -32,6 +33,7 @@
     <%= category.name %>
   </h2>
   <button class="category pt-sans-regular">Explore More</button>
+
   <div class="books scroll">
     <% locals.books && books.forEach(book => { %>
     <% if (book.name === category.name) { %>
@@ -50,7 +52,7 @@
     <% }); %>
   </div>
   <% }); %>
-
+<%- include('../partials/footer') %>
 </body>
 
 </html>
