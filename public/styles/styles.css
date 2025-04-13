@@ -5,6 +5,18 @@ Palette
 #E78B48 = Orange
 #BE3D2A = Red
 */
+
+:root {
+  --navy: #102e50;
+  --yellow: #f5c45e;
+  --orange: #e78b48;
+  --red: #be3d2a;
+  --shadow-grey: #0000001a;
+  --chin-grey: #dcdcdc;
+  --card-grey: #0000000a;
+  --text-grey: #000000b3;
+}
+
 * {
   margin: 0px;
   padding: 0px;
@@ -64,8 +76,8 @@ Palette
   align-items: center;
   height: 70px;
   padding: 0px 10px;
-  border-bottom: solid 1px gainsboro;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+  border-bottom: solid 1px var(--chin-grey);
+  box-shadow: 0 5px 5px var(--shadow-grey);
 }
 
 .menu img {
@@ -147,7 +159,7 @@ Palette
 }
 
 .cover.container {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: var(--card-grey);
   border-radius: 25px;
   display: flex;
   justify-content: center;
@@ -164,18 +176,18 @@ Palette
 }
 
 .books h5 {
-  color: rgba(0, 0, 0, 0.7);
+  color: var(--text-grey);
   margin-bottom: 5px;
 }
 
 .books h4 {
-  color: #102e50;
+  color: var(--navy);
   text-wrap: wrap;
   margin-bottom: 5px;
 }
 
 .text.container h6 {
-  color: #be3d2a;
+  color: var(--red);
 }
 
 .text.container {
@@ -188,6 +200,15 @@ Palette
   overflow-x: auto;
   white-space: nowrap;
   padding: 10px;
+}
+
+button.category {
+  background-color: var(--orange);
+  color: white;
+  border-radius: 10px;
+  padding: 5px;
+  border: none;
+  margin-left: 10px;
 }
 
 @media (min-width: 650px) {

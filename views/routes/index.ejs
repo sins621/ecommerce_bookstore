@@ -20,15 +20,18 @@
     </div>
     <% }); %>
   </div>
+
   <div class="advert top">
     <% locals.adverts && adverts.forEach(advert => { %>
     <img src="<%= advert.image_link %>" alt="<%= advert.description %>">
     <% }); %>
   </div>
+
   <% locals.categories && categories.forEach(category => { %>
   <h2 class="header pt-serif-bold" id="genre-title">
     <%= category.name %>
   </h2>
+  <button class="category pt-sans-regular">Explore More</button>
   <div class="books scroll">
     <% locals.books && books.forEach(book => { %>
     <% if (book.name === category.name) { %>
