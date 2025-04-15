@@ -39,7 +39,8 @@
     <% if (book.name === category.name) { %>
     <div class="books card container">
       <div class="books cover container">
-        <img src="<%= book.cover_link %>" alt="<%= book.title %> Cover Image">
+        <img src="<%= book.cover_link %>" loading="lazy"
+            alt="<%= book.title %> Cover Image">
       </div>
       <h5 class="pt-sans-regular"><%= book.author %></h5>
       <h4 class="pt-sans-bold"><%= book.title %></h4>
@@ -52,7 +53,7 @@
     <% }); %>
   </div>
   <% }); %>
-<%- include('../partials/footer') %>
+  <%- include('../partials/footer') %>
 </body>
 
 </html>
