@@ -20,6 +20,7 @@ Palette
 * {
   margin: 0px;
   padding: 0px;
+  box-sizing: border-box;
 }
 
 .pt-serif-regular {
@@ -70,7 +71,9 @@ Palette
   font-style: italic;
 }
 
-#header {
+/* === HEADER === */
+
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -80,55 +83,57 @@ Palette
   box-shadow: 0 5px 5px var(--shadow-grey);
 }
 
-.menu.header {
+.header_menu {
   height: 25px;
   width: 40px;
   display: flex;
   align-items: center;
 }
 
-.menu img {
+.header_menu-image {
   width: 30px;
 }
 
-.logo img {
+.header_logo-image {
   height: 30px;
 }
 
-.search img {
+.header_search-image {
   height: 25px;
 }
 
-.cart img {
+.header_cart-image {
   height: 30px;
 }
 
-.header .options {
+.header_options {
   display: flex;
   align-items: center;
   width: 50px;
   margin: 0px 5px;
 }
 
-#genre-title {
+/* === BODY === */
+
+.body-title {
   margin: 10px 10px;
 }
 
-.category.container {
+.category-list {
   display: flex;
   overflow-x: auto;
   white-space: nowrap;
   padding: 10px;
 }
 
-.category .card {
+.category-list__card {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-right: 10px;
 }
 
-.category .image-container {
+.category-list__image-container {
   width: 70px;
   height: 70px;
   position: relative;
@@ -137,13 +142,13 @@ Palette
   margin-bottom: 5px;
 }
 
-.category .image-container img {
+.category-list__image {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
-.category .title {
+.category-list__title {
   font-size: smaller;
   width: 80px;
   text-wrap: wrap;
@@ -151,20 +156,20 @@ Palette
   margin: 0;
 }
 
-.advert.top > img {
+.advert-top__image {
   width: auto;
   max-width: 100%;
   min-width: none;
 }
 
-.books.card.container {
+.books__card {
   height: 300px;
   width: 250px;
   min-width: 250px;
   margin: 0px 10px;
 }
 
-.cover.container {
+.books__cover {
   background-color: var(--card-grey);
   border-radius: 25px;
   display: flex;
@@ -175,40 +180,40 @@ Palette
   margin-bottom: 10px;
 }
 
-.books.cover img {
+.books__image {
   height: 80%;
   width: 35%;
   border-radius: 10px;
 }
 
-.books h5 {
+.books__author {
   color: var(--text-grey);
   margin-bottom: 5px;
 }
 
-.books h4 {
+.books__title {
   color: var(--navy);
   text-wrap: wrap;
   margin-bottom: 5px;
 }
 
-.text.container h6 {
+.books__price {
   color: var(--red);
 }
 
-.text.container {
+.books__details {
   display: flex;
   justify-content: space-between;
 }
 
-.books.scroll {
+.books__scroll {
   display: flex;
   overflow-x: auto;
   white-space: nowrap;
   padding: 10px;
 }
 
-button.category {
+.category-button {
   background-color: var(--orange);
   color: white;
   border-radius: 10px;
@@ -217,84 +222,85 @@ button.category {
   margin-left: 10px;
 }
 
-footer .section {
-  padding: 40px 0;
-  background-color: #102e50;
-  color: white;
+/* === FOOTER === */
+
+.footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
 }
 
-footer img {
+.footer--blue {
+  background-color: var(--navy);
+  width: 100%;
+}
+
+.footer-contact {
+  padding: 40px 0;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+  width: 300px;
+}
+
+.contact-with-icon__image {
   height: 40px;
   width: auto;
 }
 
-.section .container {
+.contact-with-icon {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
 }
 
-.section div div {
+.footer-contact__input {
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  border: none;
+  height: 30px;
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+
+.footer-contact__button {
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  border: none;
+  height: 30px;
+  font-size: larger;
+}
+
+.footer-about {
+  padding: 40px 0;
   display: flex;
   flex-direction: column;
-  /* width: 80%; */
+  align-items: start;
+  gap: 10px;
+  max-width: 300px;
 }
 
-.section input {
-  background-color: var(--navy);
-  border: solid 1px white;
-  color: white;
-  border-radius: 10px;
-  padding: 5px 12px;
-  text-align: center;
-}
-
-.section .container {
-  display: flex;
-  flex-direction: row;
-  gap: 1em;
-  /* align-items: start; */
-  justify-content: left;
-  width: 220px;
-}
-
-.section button {
-  background-color: white;
-  border: none;
+.footer-about__image {
   width: 100%;
-  border-radius: 10px;
-  padding: 5px 0;
-  font-size: 12pt;
-  width: 180px;
-}
-
-.mail {
-  font-size: 0.9rem;
-}
-
-footer .section + .section {
- background-color: white;
- color: black;
-}
-
-footer .section + .section p {
-  width: 200px;
-  text-align: left;
-  word-break: normal;
-}
-
-footer .section + .section img {
-  border: solid 1px black;
-  width: 50%;
   height: auto;
 }
 
-/* anyway I must make lunch */
-/* huh */
+.footer-about-links {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-about-links__image {
+  width: 50px;
+  height: auto;
+}
 
 @media (min-width: 650px) {
 }
