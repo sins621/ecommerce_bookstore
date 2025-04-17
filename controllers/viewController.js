@@ -21,10 +21,8 @@ const viewController = {
       )
     ).rows;
     for (let i = 0; i < books.length; i++) {
-      books[i].cover_link = await amazonService.getImageUrl({
-        bucket: process.env.AWS_BUCKET_NAME,
-        name: books[i].cover_hex,
-      });
+      books[i].cover_link =
+        "https://d29yposcq41qf1.cloudfront.net/" + books[i].cover_hex;
     }
     const categories = (
       await databaseService.query(
@@ -37,10 +35,8 @@ const viewController = {
       )
     ).rows;
     for (let i = 0; i < categories.length; i++) {
-      categories[i].image_link = await amazonService.getImageUrl({
-        bucket: process.env.AWS_BUCKET_NAME,
-        name: categories[i].image_hex,
-      });
+      categories[i].image_link =
+        "https://d29yposcq41qf1.cloudfront.net/" + categories[i].image_hex;
     }
     const adverts = (
       await databaseService.query(
