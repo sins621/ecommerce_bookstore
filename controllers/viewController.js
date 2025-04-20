@@ -47,10 +47,7 @@ const viewController = {
       )
     ).rows;
     for (let i = 0; i < adverts.length; i++) {
-      adverts[i].image_link = await amazonService.getImageUrl({
-        bucket: process.env.AWS_BUCKET_NAME,
-        name: adverts[i].image_hex,
-      });
+      adverts[i].image_link = "https://d29yposcq41qf1.cloudfront.net/" + adverts[i].image_hex
     }
     return res.render("routes/index.ejs", {
       books,
