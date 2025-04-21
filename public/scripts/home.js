@@ -29,13 +29,13 @@ async function updateBookCollection(category) {
       const bookCollectinGrid = document.createElement("div");
       bookCollectinGrid.className = "book-collection-grid";
       bookCollection.appendChild(bookCollectinGrid);
-      
+
       const filteredBooks = books.filter((book) => {
         return book.category === category;
-      })
+      });
 
       filteredBooks.forEach((book) => {
-          createBookItem(bookCollectinGrid, book);
+        createBookItem(bookCollectinGrid, book);
       });
     }
   });
@@ -90,4 +90,14 @@ function createBookItem(element, book) {
   const bookPrice = document.createElement("p");
   bookPrice.appendChild(document.createTextNode("R" + book.price));
   bookContent.appendChild(bookPrice);
+}
+
+/* Set the width of the side navigation to 250px */
+function openNav() {
+  document.getElementById("side-nav").style.width = "250px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+  document.getElementById("side-nav").style.width = "0";
 }

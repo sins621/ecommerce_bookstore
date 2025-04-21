@@ -1,10 +1,19 @@
 <header class="header">
+  <div id="side-nav" class="side-nav">
+    <a href="javascript:void(0)" class="side-nav_close-button"
+        onclick="closeNav()">&times;</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Clients</a>
+    <a href="#">Contact</a>
+  </div>
+
   <div class="header_menu">
-    <a href="">
+    <span onclick="openNav()">
       <img class="header_menu-image"
           src="   https://cdn-icons-png.flaticon.com/512/2976/2976215.png "
           alt="">
-    </a>
+    </span>
   </div>
   <div class="header_logo">
     <a href="/">
@@ -16,7 +25,8 @@
     <a class="header_search" href=""><img class="header_search-image"
           src="/img/icons/search.png" alt="Search Icon"></a>
     <a class="header_cart" href="">
-      <img class="header_cart-image" src="/img/icons/shopping-cart.png" alt="Shopping Cart Icon">
+      <img class="header_cart-image" src="/img/icons/shopping-cart.png"
+          alt="Shopping Cart Icon">
     </a>
   </div>
 </header>
