@@ -76,7 +76,6 @@
   padding: 0px 10px;
   border-bottom: solid 1px var(--chin-grey);
   box-shadow: 0 5px 5px var(--shadow-grey);
-  width: 100%;
   z-index: 1;
   transition: 0.3s;
 }
@@ -117,10 +116,8 @@
   position: fixed;
   z-index: 1;
   top: 69px; /*nice*/
-  left: 0;
   background-color: white;
   overflow-x: hidden;
-  padding-top: 60px;
   transition: 0.2s;
   border-right: none;
   box-shadow: none;
@@ -132,10 +129,10 @@
 }
 
 .side-nav_link {
-  padding: 8px 8px 8px 32px;
+  padding: 5px 5px 5px 10px;
   text-decoration: none;
-  font-size: 25px;
   color: black;
+  font-size: x-large;
   display: block;
   transition: 0.3s;
 }
