@@ -92,12 +92,32 @@ function createBookItem(element, book) {
   bookContent.appendChild(bookPrice);
 }
 
-/* Set the width of the side navigation to 250px */
-function openNav() {
-  document.getElementById("side-nav").style.width = "250px";
+let navOpen = false;
+
+function toggleNav() {
+  const side_nav = document.getElementById("side-nav");
+  if (navOpen) {
+    side_nav.style.width = "0";
+    side_nav.classList.remove("side-nav--visible");
+    navOpen = false;
+  } else {
+    side_nav.style.width = "250px";
+    side_nav.classList.add("side-nav--visible");
+    navOpen = true;
+  }
 }
 
-/* Set the width of the side navigation to 0 */
-function closeNav() {
-  document.getElementById("side-nav").style.width = "0";
-}
+let prevScrollpos = window.pageYOffset;
+
+window.onscroll = function () {
+  let currentScrollPos = window.pageYOffset;
+  if (prevScrollpos > currentScrollPos) {
+    document.getElementsByClassName("header")[0].style.top = "0";
+  } else {
+    document.getElementsByClassName("header")[0].style.top = "-70px";
+    if (navOpen) {
+      toggleNav();
+    }
+  }
+  prevScrollpos = currentScrollPos;
+};

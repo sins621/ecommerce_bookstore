@@ -7,55 +7,64 @@
 
 <body>
   <%- include('../partials/header') %>
-  <h2 class="pt-serif-bold body-title">
-    Genres
-  </h2>
+  <div id="side-nav" class="side-nav">
+    <a href="#" class="side-nav_link pt-serif-regular">About</a>
+    <a href="#" class="side-nav_link pt-serif-regular">Services</a>
+    <a href="#" class="side-nav_link pt-serif-regular">Clients</a>
+  </div>
 
-  <div class="category-list">
+  <div class="main">
+    <h2 class="pt-serif-bold body-title">
+      Genres
+    </h2>
+
+    <div class="category-list">
+      <% locals.categories && categories.forEach(category => { %>
+      <div class="category-list__card">
+        <div class="category-list__image-container">
+          <img class="category-list__image" src="<%= category.image_link %>"
+              alt="<%= category.name %> Image">
+        </div>
+        <h3 class="category-list__title pt-sans-regular"><%= category.name %>
+        </h3>
+      </div>
+      <% }); %>
+    </div>
+
+    <% locals.adverts && adverts.forEach(advert => { %>
+    <img class="advert-top__image" src="<%= advert.image_link %>"
+        alt="<%= advert.description %>">
+    <% }); %>
     <% locals.categories && categories.forEach(category => { %>
-    <div class="category-list__card">
-      <div class="category-list__image-container">
-        <img class="category-list__image" src="<%= category.image_link %>"
-            alt="<%= category.name %> Image">
+    <h2 class="body-title pt-serif-bold body_title">
+      <%= category.name %>
+    </h2>
+    <button class="category-button pt-sans-regular">Explore More</button>
+
+    <div class="books__scroll">
+      <% locals.books && books.forEach(book => { %>
+      <% if (book.name === category.name) { %>
+      <div class="books__card">
+        <div class="books__cover">
+          <img class="books__image" src="<%= book.cover_link %>" loading="lazy"
+              alt="<%= book.title %> Cover Image">
+        </div>
+        <h5 class="books__author pt-sans-regular"><%= book.author %></h5>
+        <h4 class="books__title pt-sans-bold"><%= book.title %></h4>
+        <div class="books__details">
+          <h6 class="books__price pt-sans-regular">
+            R<%= Number(book.price).toFixed(2) %></h6>
+          <p class="books__rating">*****</p>
+        </div>
       </div>
-      <h3 class="category-list__title pt-sans-regular"><%= category.name %></h3>
+      <% } %>
+      <% }); %>
     </div>
+
     <% }); %>
   </div>
-
-  <% locals.adverts && adverts.forEach(advert => { %>
-  <img class="advert-top__image" src="<%= advert.image_link %>"
-      alt="<%= advert.description %>">
-  <% }); %>
-
-  <% locals.categories && categories.forEach(category => { %>
-  <h2 class="body-title pt-serif-bold body_title">
-    <%= category.name %>
-  </h2>
-  <button class="category-button pt-sans-regular">Explore More</button>
-
-  <div class="books__scroll">
-    <% locals.books && books.forEach(book => { %>
-    <% if (book.name === category.name) { %>
-    <div class="books__card">
-      <div class="books__cover">
-        <img class="books__image" src="<%= book.cover_link %>" loading="lazy"
-            alt="<%= book.title %> Cover Image">
-      </div>
-      <h5 class="books__author pt-sans-regular"><%= book.author %></h5>
-      <h4 class="books__title pt-sans-bold"><%= book.title %></h4>
-      <div class="books__details">
-        <h6 class="books__price pt-sans-regular">
-          R<%= Number(book.price).toFixed(2) %></h6>
-        <p class="books__rating">*****</p>
-      </div>
-    </div>
-    <% } %>
-    <% }); %>
-  </div>
-
-  <% }); %>
   <%- include('../partials/footer') %>
 </body>
 <script src="./scripts/home.js"></script>
+
 </html>
