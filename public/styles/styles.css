@@ -115,12 +115,15 @@
   width: 0;
   position: fixed;
   z-index: 1;
-  top: 68px; /*nice*/
+  top: 68px;
   background-color: white;
   overflow-x: hidden;
   transition: 0.2s;
   border-right: none;
   box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .side-nav--visible {
@@ -135,7 +138,7 @@
   font-size: x-large;
   display: block;
   transition: 0.3s;
-  box-shadow: 0 1px 0 var(--chin-grey)
+  white-space: nowrap;
 }
 
 .side-nav_link:hover {
@@ -164,6 +167,24 @@
   text-decoration: none;
   color: var(--text-grey);
   display: block;
+}
+
+.side-nav-login {
+  transform: translate(0, -68px);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--navy);
+  height: 50px;
+}
+
+.side-nav-login_button {
+  background-color: white;
+  color: black;
+  border-radius: 20px;
+  padding: 10px;
+  width: 80px;
+  border: none;
 }
 
 /* === BODY === */

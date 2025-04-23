@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "sync": "browser-sync start --proxy 'http://localhost:6199' --files '**/'",
+    "sync": "browser-sync start --proxy=http://localhost:6199 --files=**/*",
     "test": "vitest"
   },
   "author": "",
