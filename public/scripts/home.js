@@ -121,3 +121,12 @@ window.onscroll = function () {
   }
   prevScrollpos = currentScrollPos;
 };
+
+function toggleNested(id) {
+  nested_elements = document.getElementById(id);
+  if (nested_elements.classList.contains("side-nav-nested--visible")) {
+    nested_elements.classList.remove("side-nav-nested--visible");
+  } else {
+    nested_elements.classList.add("side-nav-nested--visible");
+  }
+}

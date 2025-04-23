@@ -115,7 +115,7 @@
   width: 0;
   position: fixed;
   z-index: 1;
-  top: 69px; /*nice*/
+  top: 68px; /*nice*/
   background-color: white;
   overflow-x: hidden;
   transition: 0.2s;
@@ -135,6 +135,7 @@
   font-size: x-large;
   display: block;
   transition: 0.3s;
+  box-shadow: 0 1px 0 var(--chin-grey)
 }
 
 .side-nav_link:hover {
@@ -149,11 +150,26 @@
   margin-left: 50px;
 }
 
+.side-nav-nested {
+  display: none;
+}
+
+.side-nav-nested--visible {
+  display: block;
+}
+
+.side-nav-nested_link {
+  padding: 5px 5px 5px 10px;
+  margin-left: 10px;
+  text-decoration: none;
+  color: var(--text-grey);
+  display: block;
+}
+
 /* === BODY === */
 
 .main {
   padding-top: 70px;
-  /*I'm gonna make it dissapear on scroll, both side menu and top menu*/
 }
 
 .body-title {
