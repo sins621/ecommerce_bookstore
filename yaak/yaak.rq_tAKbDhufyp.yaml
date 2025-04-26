@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_tAKbDhufyp
+createdAt: 2025-04-26T15:33:35.320966400
+updatedAt: 2025-04-26T15:38:03.687385800
+workspaceId: wk_HdpjNjtjjJ
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: ''
+sortPriority: -1743085200000.0
+url: http://localhost:6199/books/search
+urlParameters:
+- enabled: true
+  name: query
+  value: game
+  id: 8p3NINSqS4
+- enabled: true
+  name: ''
+  value: ''
+  id: seTqMHxTDK

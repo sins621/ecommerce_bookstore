@@ -47,11 +47,9 @@ function toggleSearch() {
   }
 }
 
-function searchBook() {
-  console.log(document.getElementsByClassName("header-search_input")[0].value);
-}
+const debouncedSearchBook = debounce(searchBook);
 
-function debounce(func, timeout = 1000) {
+function debounce(func, timeout = 300) {
   let timer;
   return (...args) => {
     clearTimeout(timer);
@@ -59,4 +57,24 @@ function debounce(func, timeout = 1000) {
       func.apply(this, args);
     }, timeout);
   };
+}
+
+async function searchBook() {
+  const searchArea = document.getElementsByClassName("header-search-books")[0];
+  searchArea.innerHTML = "";
+  const searchText = document.getElementsByClassName("header-search_input")[0]
+    .value;
+  if (!searchText) return;
+  data = await fetch(`/books/search?query=${searchText}`);
+  const bookData = await data.json();
+  renderSearchBooks(bookData);
+}
+
+function renderSearchBooks(bookData) {
+  const searchArea = document.getElementsByClassName("header-search-books")[0];
+  bookData.forEach((book) => {
+    let coverPhoto = document.createElement("img");
+    coverPhoto.src = "https://d29yposcq41qf1.cloudfront.net/" + book.cover_hex;
+    searchArea.appendChild(coverPhoto);
+  });
 }

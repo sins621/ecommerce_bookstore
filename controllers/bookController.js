@@ -4,6 +4,8 @@ import geminiService from "../services/geminiService.js";
 import openLibraryService from "../services/openLibraryService.js";
 import "dotenv/config";
 import crypto from "crypto";
+import { log } from "console";
+import { search } from "@inquirer/prompts";
 
 const bookController = {
   allBooks: async (req, res) => {
@@ -106,6 +108,30 @@ const bookController = {
     //   createdBy: req.user.email,
     // });
     return res.json({ message: "Book Added" });
+  },
+
+  textSearch: async (req, res) => {
+    const searchQuery = req.query.query;
+    console.log("Original search query:", searchQuery);
+
+    // Split the search query into words and add the prefix match operator
+    const tsQueryString = searchQuery
+      .split(/\s+/)
+      .map((word) => `${word}:*`) // Add :* for prefix matching
+      .join(" & "); // Combine with AND operator
+
+    console.log("Generated tsquery string:", tsQueryString);
+
+    const searchData = (
+      await databaseService.query(
+        `SELECT book_id, title, author, cover_hex
+        FROM books
+        WHERE to_tsvector('english', title || ' ' || author) @@ to_tsquery('english', $1);
+        `,
+        [tsQueryString]
+      )
+    ).rows;
+    return res.json(searchData);
   },
 };
 

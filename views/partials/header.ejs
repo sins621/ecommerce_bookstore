@@ -13,9 +13,11 @@
             alt="Company Logo">
       </a>
     </div>
+
     <div class="header_options">
-      <span class="header_search" onclick="toggleSearch()"><img class="header_search-image"
-            src="/img/icons/search.png" alt="Search Icon"></span>
+      <span class="header_search" onclick="toggleSearch()"><img
+            class="header_search-image" src="/img/icons/search.png"
+            alt="Search Icon"></span>
       <a class="header_cart" href="">
         <img class="header_cart-image" src="/img/icons/shopping-cart.png"
             alt="Shopping Cart Icon">
@@ -24,7 +26,10 @@
   </div>
 
   <div class="header-search">
-    <input class="header-search_input" type="text" placeholder="Search Here" oninput="debounce(searchBook())">
-  </div>
+    <input class="header-search_input" type="text" placeholder="Search Here"
+        oninput="debouncedSearchBook()">
+    <div class="header-search-books">
 
+    </div>
+  </div>
 </header>
