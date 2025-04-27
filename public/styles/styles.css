@@ -135,6 +135,32 @@
   border: solid var(--chin-grey) 1px;
 }
 
+.header-search-books {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px;
+}
+
+.header-search-book {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header-search-book_image {
+  width: 70px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.header-search-book-text {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  min-width: 60%;
+}
+
 .side-nav {
   height: 100%;
   width: 0;

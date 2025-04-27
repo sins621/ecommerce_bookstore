@@ -42,6 +42,7 @@ function toggleSearch() {
   if (searchClasses.contains("header-search--visible")) {
     searchClasses.remove("header-search--visible");
     document.getElementsByClassName("header-search_input")[0].value = "";
+    document.getElementsByClassName("header-search-books")[0].innerHTML = "";
   } else {
     searchClasses.add("header-search--visible");
   }
@@ -73,8 +74,26 @@ async function searchBook() {
 function renderSearchBooks(bookData) {
   const searchArea = document.getElementsByClassName("header-search-books")[0];
   bookData.forEach((book) => {
-    let coverPhoto = document.createElement("img");
+    const searchBook = document.createElement("div");
+    searchBook.classList.add("header-search-book");
+    searchArea.appendChild(searchBook);
+    const coverPhoto = document.createElement("img");
     coverPhoto.src = "https://d29yposcq41qf1.cloudfront.net/" + book.cover_hex;
-    searchArea.appendChild(coverPhoto);
+    coverPhoto.classList.add("header-search-book");
+    coverPhoto.classList.add("header-search-book_image");
+    searchBook.appendChild(coverPhoto);
+    bookText = document.createElement("div");
+    bookText.classList.add("header-search-book-text");
+    searchBook.appendChild(bookText);
+    bookAuthor = document.createElement("h5");
+    bookAuthor.classList.add("pt-sans-regular");
+    bookAuthor.classList.add("header-search-book-text-author_header");
+    bookAuthor.appendChild(document.createTextNode(book.author));
+    bookText.appendChild(bookAuthor);
+    bookTitle = document.createElement("h4");
+    bookTitle.classList.add("pt-sans-regular");
+    bookTitle.classList.add("header-search-book-text-title_header"); 
+    bookTitle.appendChild(document.createTextNode(book.title));
+    bookText.appendChild(bookTitle);
   });
 }
