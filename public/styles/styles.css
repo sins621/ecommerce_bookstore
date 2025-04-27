@@ -146,6 +146,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  gap: 20px;
 }
 
 .header-search-book_image {
@@ -157,8 +158,7 @@
 .header-search-book-text {
   display: flex;
   flex-direction: column;
-  width: 60%;
-  min-width: 60%;
+  width: 200px;
 }
 
 .side-nav {
